@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/imgQuestType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/quest_type"
+        android:maxHeight="24dp"
+        android:maxWidth="24dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_quest_public" />
+
+    <TextView
+        android:id="@+id/txtNewQuestName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:text="@string/quest_name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/imgQuestXp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/quest_xp"
+        android:maxHeight="24dp"
+        android:maxWidth="24dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_quest_xp" />
+
+    <TextView
+        android:id="@+id/txtNewQuestXp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/quest_xp" />
+
+</LinearLayout>
