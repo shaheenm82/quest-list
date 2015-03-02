@@ -112,7 +112,7 @@ public class QuestListActivity extends ActionBarActivity implements
 		switch (v.getId()){
 		case R.id.btnAddNewQuest:
 			//open activity for new quest
-			Intent intent = new Intent(this, NewQuestActivity.class);
+			Intent intent = new Intent(this, AddQuestActivity.class);
 			startActivity(intent);
 			break;
 		}

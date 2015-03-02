@@ -1,17 +1,20 @@
 package com.davies.questlist.ui;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +25,10 @@ import com.davies.questlist.db.Task;
 public class NewQuestActivity extends ActionBarActivity implements OnClickListener{
 	Quest quest;
 	
+	private static final String LOG = "NewQuestActivity";
+	
 	//LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    ArrayList<String> taskList=new ArrayList<String>();
+    ArrayList<String> taskList;
 
     //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
     ArrayAdapter<String> taskListAdapter;
@@ -44,7 +49,18 @@ public class NewQuestActivity extends ActionBarActivity implements OnClickListen
 		Button btnSaveQuest = (Button) findViewById(R.id.btnSaveQuest);
 		btnSaveQuest.setOnClickListener(this);
 		
+		ListView taskview = (ListView) findViewById(R.id.lstQuestTasks);
+		
+		if (savedInstanceState != null){
+			//taskList = savedInstanceState.getStringArrayList("taskList");
+		}else{
+			//taskList=new ArrayList<String>();
+		}
+		taskList=new ArrayList<String>();
+		
 		taskListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, taskList);
+		
+		taskview.setAdapter(taskListAdapter);
 	}
 
 	@Override
@@ -64,6 +80,15 @@ public class NewQuestActivity extends ActionBarActivity implements OnClickListen
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		//super.onSaveInstanceState(outState, outPersistentState);
+		
+		//outState.putStringArrayList("taskList", taskList);
 	}
 
 	@Override
@@ -117,8 +142,21 @@ public class NewQuestActivity extends ActionBarActivity implements OnClickListen
 				t.setPersonal_xp(i);
 			}
 			
-			t.setCreated_date(DateFormat.getDateTimeInstance().format(Calendar.getInstance()));
+			Time time = new Time();
+			time.setToNow();
+			
+			Date date = new Date();
+			java.text.DateFormat dateFormat =
+			    android.text.format.DateFormat.getDateFormat(getApplicationContext());
+			Log.d(LOG,"Time: " + time.format2445());
+			
+			t.setCreated_date(time.format2445());
+			
+			taskList.add(t.getName());
+			taskListAdapter.notifyDataSetChanged();
+			//taskListAdapter.add(t.getName());
 			quest.addTask(t);
+			
 			break;
 		case R.id.btnRemoveTask:
 			

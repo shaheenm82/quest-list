@@ -89,23 +89,23 @@ public class TaskHelper {
 		return taskList;
 	}
 		
-	public int updateQuestData(Quest quest){
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		
-		String where = "id = ?";
-		String arg[] = {Long.toString(user.getId())};
-		
-		ContentValues values = new ContentValues();
-	    values.put(DatabaseHelper.COL_USER_NAME, user.getName());
-	    values.put(DatabaseHelper.COL_USER_XP, user.getXp());
-	    values.put(DatabaseHelper.COL_USER_LEVEL, user.getLevel());
-	    
-	    Log.i(LOG,"Updating User record " + user);
-	    
-	    int rows = db.update(DatabaseHelper.TABLE_USER, values, where, arg);
-	    
-	    db.close();
-	    
-		return rows;
-	}
+//	public int updateQuestData(Quest quest){
+//		SQLiteDatabase db = dbHelper.getReadableDatabase();
+//		
+//		String where = "id = ?";
+//		String arg[] = {Long.toString(user.getId())};
+//		
+//		ContentValues values = new ContentValues();
+//	    values.put(DatabaseHelper.COL_USER_NAME, user.getName());
+//	    values.put(DatabaseHelper.COL_USER_XP, user.getXp());
+//	    values.put(DatabaseHelper.COL_USER_LEVEL, user.getLevel());
+//	    
+//	    Log.i(LOG,"Updating User record " + user);
+//	    
+//	    int rows = db.update(DatabaseHelper.TABLE_USER, values, where, arg);
+//	    
+//	    db.close();
+//	    
+//		return rows;
+//	}
 }
