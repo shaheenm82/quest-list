@@ -1,6 +1,7 @@
 package com.davies.questlist.ui;
 
 import java.util.Date;
+import java.util.List;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.Task;
@@ -8,6 +9,8 @@ import com.davies.questlist.db.Task;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
@@ -19,9 +22,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddTaskFragment extends Fragment implements OnClickListener{
+public class AddTaskFragment extends Fragment implements OnClickListener, TaskCreationListener{
 
-	private QuestModificationListener qmodListener;
+	private QuestCreationListener questCreationListener;
+	
+	private String purpose;
 	
 	public static AddTaskFragment newInstance() {
 		AddTaskFragment fragment = new AddTaskFragment();
@@ -46,7 +51,7 @@ public class AddTaskFragment extends Fragment implements OnClickListener{
 		Button btnSaveTask = (Button) rootView.findViewById(R.id.btnSaveTask);
 		btnSaveTask.setOnClickListener(this);
 		
-		qmodListener = (QuestModificationListener)getActivity();
+		//questCreationListener = (QuestCreationListener)getActivity();
 		return rootView;
 	}
 
@@ -60,6 +65,10 @@ public class AddTaskFragment extends Fragment implements OnClickListener{
 		super.onDetach();
 	}
 
+	public void setQuestCreationListener(QuestCreationListener qcl){
+		questCreationListener = qcl;
+	}
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -118,8 +127,12 @@ public class AddTaskFragment extends Fragment implements OnClickListener{
 			//Log.d(LOG,"Time: " + DateFormat.format("", date));
 			
 			t.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
-						
-			qmodListener.taskAdded(t);
+			
+			if (purpose.equals("new")){
+				questCreationListener.taskCreated(t);
+			}else{
+				questCreationListener.taskUpdated(t);
+			}
 			//getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 			//getActivity().getSupportFragmentManager().popBackStackImmediate();
 			break;
@@ -128,5 +141,31 @@ public class AddTaskFragment extends Fragment implements OnClickListener{
 			break;
 		}
 		
+	}
+
+	@Override
+	public void newTask() {
+		// TODO Auto-generated method stub
+//		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//		
+//		fragmentTransaction.replace(R.id.container, this);
+//		fragmentTransaction.addToBackStack("task");
+//		fragmentTransaction.commit();
+		
+		purpose = "new";
+	}
+
+	@Override
+	public void editTask(Task task) {
+		// TODO Auto-generated method stub
+//		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//		
+//		fragmentTransaction.replace(R.id.container, this);
+//		fragmentTransaction.addToBackStack("task");
+//		fragmentTransaction.commit();
+		
+		purpose = "edit";
 	}
 }

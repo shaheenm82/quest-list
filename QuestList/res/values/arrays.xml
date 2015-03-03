@@ -7,5 +7,9 @@
         <item >Social</item>
         <item >Personal</item>
     </string-array>
+    <string-array name="task_list_menu">
+        <item >Edit</item>
+        <item >Delete</item>
+    </string-array>
     
 </resources>

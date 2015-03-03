@@ -7,6 +7,12 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
-
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/action_save_quest"
+        android:orderInCategory="0"
+        android:title="@string/save_quest"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_save"/>
 </menu>

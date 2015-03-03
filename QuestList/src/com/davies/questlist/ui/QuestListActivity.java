@@ -87,7 +87,7 @@ public class QuestListActivity extends ActionBarActivity implements
 			// Only show items in the action bar relevant to this screen
 			// if the drawer is not showing. Otherwise, let the drawer
 			// decide what to show in the action bar.
-			//getMenuInflater().inflate(R.menu.quest_list, menu);
+			getMenuInflater().inflate(R.menu.quest_list, menu);
 			restoreActionBar();
 			return true;
 		}
@@ -100,7 +100,8 @@ public class QuestListActivity extends ActionBarActivity implements
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_add_quest) {
+			addNewQuest();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -112,13 +113,16 @@ public class QuestListActivity extends ActionBarActivity implements
 		switch (v.getId()){
 		case R.id.btnAddNewQuest:
 			//open activity for new quest
-			Intent intent = new Intent(this, AddQuestActivity.class);
-			startActivity(intent);
+			addNewQuest();
 			break;
 		}
 		Log.i("QuestListActivity","Click Event");
 	}
 
+	private void addNewQuest(){
+		Intent intent = new Intent(this, AddQuestActivity.class);
+		startActivity(intent);
+	}
 //	/**
 //	 * A placeholder fragment containing a simple view.
 //	 */

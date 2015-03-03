@@ -53,25 +53,12 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/lloQuestTask"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btnAddTask"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp" >
-
-        <Button
-            android:id="@+id/btnAddTask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_task" />
-
-        <Button
-            android:id="@+id/btnRemoveTask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rem_task" />
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:text="@string/new_task" />
 
     <ListView
         android:id="@+id/lstQuestTasks"
