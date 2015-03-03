@@ -12,15 +12,18 @@ import android.view.View.OnClickListener;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
+import com.davies.questlist.db.QuestHelper;
 import com.davies.questlist.db.Task;
 
-public class AddQuestActivity extends ActionBarActivity implements OnClickListener{
-	QuestCreationListener qmodListener;
+public class AddQuestActivity extends ActionBarActivity implements TaskCreationListener, QuestCreationListener{
+	QuestCreationListener questCreationListener;
 	//TaskCreationListener 
 	
 	//Quest quest;
 	AddQuestFragment questFragment;
 	AddTaskFragment taskFragment;
+	
+	String current_fragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +31,16 @@ public class AddQuestActivity extends ActionBarActivity implements OnClickListen
 		setContentView(R.layout.activity_add_quest);		
 		if (savedInstanceState == null) {
 			questFragment = AddQuestFragment.newInstance();
-			taskFragment = AddTaskFragment.newInstance();
+			//taskFragment = AddTaskFragment.newInstance();
 			
-			questFragment.setTaskCreationListener(taskFragment);
-			taskFragment.setQuestCreationListener(questFragment);
+			//questFragment.setTaskCreationListener(taskFragment);
+			//taskFragment.setQuestCreationListener(questFragment);
 			
 			//Fragment f = AddQuestFragment.newInstance();
 			//qmodListener = (QuestCreationListener)f;
+			questCreationListener = questFragment;
+			questFragment.setTaskCreationListener(this);
+			
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, questFragment).commit();
 			
@@ -57,24 +63,86 @@ public class AddQuestActivity extends ActionBarActivity implements OnClickListen
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_save_quest) {
+			if (current_fragment.equals("task")){
+				taskFragment.saveTask();
+			}else if(current_fragment.equals("quest")){
+				questFragment.saveQuest();
+				
+				QuestHelper qhelper = new QuestHelper(this);
+				qhelper.createQuest(questFragment.getQuest());
+				
+				finish();
+			}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+//	@Override
+//	public void onClick(View v) {
+//		switch (v.getId()){
+//		case R.id.btnAddTask:
+//			Fragment f = AddTaskFragment.newInstance();
+//			FragmentManager fragmentManager = getSupportFragmentManager();
+//			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//			
+//			fragmentTransaction.replace(R.id.container, f);
+//			fragmentTransaction.addToBackStack("task");
+//			fragmentTransaction.commit();
+//			break;
+//		}		
+//	}
+
 	@Override
-	public void onClick(View v) {
-		switch (v.getId()){
-		case R.id.btnAddTask:
-			Fragment f = AddTaskFragment.newInstance();
-			FragmentManager fragmentManager = getSupportFragmentManager();
-			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			
-			fragmentTransaction.replace(R.id.container, f);
-			fragmentTransaction.addToBackStack("task");
-			fragmentTransaction.commit();
-			break;
-		}		
+	public void newTask() {
+		current_fragment = "task";
+		
+		taskFragment = AddTaskFragment.newInstance();
+		taskFragment.setQuestCreationListener(this);
+		
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		
+		fragmentTransaction.replace(R.id.container, taskFragment);
+		fragmentTransaction.addToBackStack(current_fragment);
+		fragmentTransaction.commit();
+		
+		
+	}
+
+	@Override
+	public void editTask(Task task) {
+		current_fragment = "task";
+		
+		taskFragment = AddTaskFragment.newInstance();
+		taskFragment.setQuestCreationListener(this);
+		
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		
+		fragmentTransaction.replace(R.id.container, taskFragment);
+		fragmentTransaction.addToBackStack(current_fragment);
+		fragmentTransaction.commit();
+		
+		taskFragment.editTask(task);
+	}
+
+	@Override
+	public void taskCreated(Task task) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.popBackStack();
+		questCreationListener.taskCreated(task);
+		
+		current_fragment = "quest";
+	}
+
+	@Override
+	public void taskUpdated(Task task) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.popBackStack();
+		questCreationListener.taskUpdated(task);
+		
+		current_fragment = "quest";
 	}
 
 //	@Override

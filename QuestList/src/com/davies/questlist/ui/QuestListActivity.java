@@ -11,20 +11,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.DatabaseHelper;
+import com.davies.questlist.db.QuestHelper;
 
 public class QuestListActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener {
 
+	private static final String LOG = "QuestListActivity";
 	/**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
 	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
+	
 	/**
 	 * Used to store the last screen title. For use in
 	 * {@link #restoreActionBar()}.
@@ -56,6 +61,8 @@ public class QuestListActivity extends ActionBarActivity implements
 			// Set up the drawer.
 			mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 					(DrawerLayout) findViewById(R.id.drawer_layout));
+			
+			
 		}
 	}
 
@@ -66,12 +73,16 @@ public class QuestListActivity extends ActionBarActivity implements
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,
-						QuestListFragment.newInstance(position + 1)).commit();
+						QuestListFragment.newInstance(position)).commit();
 	}
 
 	public void onSectionAttached(int number) {
 		String[] skilltree = getResources().getStringArray(R.array.skill_tree);
-		mTitle = skilltree[number - 1];
+		
+		
+		mTitle = skilltree[number];
+		Log.d(LOG, mTitle.toString());
+		
 	}
 
 	public void restoreActionBar() {

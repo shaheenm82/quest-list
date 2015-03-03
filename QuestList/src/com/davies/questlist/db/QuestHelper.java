@@ -41,8 +41,10 @@ public class QuestHelper {
 	    // insert row
 	    long id = db.insert(DatabaseHelper.TABLE_QUEST, null, values);
 	    
+	    TaskHelper thelper = new TaskHelper(context);
 	    for (Task task : quest.getTasks()) {
 	    	//use Task Helper to add task
+	    	thelper.createTask(task, id);
 		}
 	    db.close();
 	    return id;
@@ -54,11 +56,11 @@ public class QuestHelper {
 		List<Quest> questList = new ArrayList<>();
 		Quest quest;
 		
-		String qry = "select distinct(quest._id), quest.name, quest.type, quest.xp, quest.created_date, quest.completed_date from quest"
+		String qry = "select distinct(quest._id), quest.name, quest.type, quest.xp, quest.created_date, quest.completed from quest "
 				+ "inner join task "
 				+ "on (quest._id = task.quest_id) "
-				+ "where task." + skill + " > 0"
-				+ "order by quest.completed_date, quest.created_date";
+				+ "where task." + skill + "_xp > 0 "
+				+ "order by quest.completed, quest.created_date";
 		
 		Cursor c = db.rawQuery(qry, null);
 		

@@ -73,5 +73,22 @@ public class Task {
 		this.completed_date = completed_date;
 	}
 	
+	@Override
+	public String toString() {
+		String s;
+		
+		s = getName();
+		return s;
+	}
+	
+	public String toStringDebug() {
+		String s;
+		
+		s = getName() + "," + getDescription() + "," + getFitness_xp() + "," + getLearning_xp()
+				+ "," + getCulture_xp() + "," + getSocial_xp() + "," + getPersonal_xp() + ","
+				+ getCreated_date() + "," + getCompleted_date();
+		return s;
+	}
+	
 	
 }

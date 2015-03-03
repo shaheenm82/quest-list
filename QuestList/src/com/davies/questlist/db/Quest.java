@@ -69,4 +69,20 @@ public class Quest {
 	public void addTask(Task task){
 		tasks.add(task);
 	}
+	
+	@Override
+	public String toString() {
+		String s;
+		
+		s = getName();
+		return s;
+	}
+	
+	public String toStringDebug() {
+		String s;
+		
+		s = getName() + "," + getXp() + "," + getType()
+				+ getCreated_date() + "," + getCompleted_date();
+		return s;
+	}
 }

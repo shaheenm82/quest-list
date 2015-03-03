@@ -18,9 +18,17 @@ public class QuestListAdapter extends BaseExpandableListAdapter {
     
     private List<Quest> quests;
     
+    public QuestListAdapter(Context context) {
+        this.context = context;
+    }
+    
     public QuestListAdapter(Context context,List<Quest> quests) {
         this.context = context;
         this.quests = quests;
+    }
+    
+    public void setItems(List<Quest> quests){
+    	this.quests = quests;
     }
     
 	@Override

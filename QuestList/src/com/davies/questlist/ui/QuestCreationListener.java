@@ -6,5 +6,4 @@ public interface QuestCreationListener {
 	public void taskCreated(Task task);
 	
 	public void taskUpdated(Task task);
-	
 }
