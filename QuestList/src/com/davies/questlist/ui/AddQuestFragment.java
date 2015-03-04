@@ -61,10 +61,6 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 	// TODO: Rename and change types and number of parameters
 	public static AddQuestFragment newInstance() {
 		AddQuestFragment fragment = new AddQuestFragment();
-//		Bundle args = new Bundle();
-//		args.putString(ARG_PARAM1, param1);
-//		args.putString(ARG_PARAM2, param2);
-//		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -98,7 +94,6 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		taskListAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
 		
 		taskview.setAdapter(taskListAdapter);
-		//taskview.setOnItemLongClickListener(this);
 		registerForContextMenu(taskview);
 		return rootView;
 	}
@@ -111,7 +106,6 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		//mListener = null;
 	}
 
 	
@@ -139,29 +133,18 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		  String menuItemName = menuItems[menuItemIndex];
 		  String listItemName = taskList.get(info.position);
 
-		  Log.d(LOG,menuItemName + " Task : " + listItemName + " (" + menuItemIndex + ")");
-		  
 		  switch (menuItemIndex){
-		  case 0:
-//			  	FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//				FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//				
-//				fragmentTransaction.replace(R.id.container, (Fragment)taskCreationListener);
-//				fragmentTransaction.addToBackStack("task");
-//				fragmentTransaction.commit();
-//				
+		  case 0: //Edit Option
 			  	editIndex = info.position;
 				task = quest.getTasks().get(info.position);
 				taskCreationListener.editTask(task);
 			  break;
-		  case 1:
+		  case 1: //Delete Option
 			  quest.getTasks().remove(info.position);
 			  taskList.remove(info.position);
 			  taskListAdapter.notifyDataSetChanged();
 			  break;
 		  }
-		  //TextView text = (TextView)findViewById(R.id.footer);
-		  //text.setText(String.format("Selected %s for item %s", menuItemName, listItemName));
 		  return true;
 	}
 
@@ -171,51 +154,50 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 
 	@Override
 	public void taskCreated(Task task) {
-		Log.d(LOG,"Adding Task : " + task.getName());
+		Log.i(LOG,"Adding Task : " + task.getName());
 		
 		taskList.add(task.getName());
 		taskListAdapter.notifyDataSetChanged();
 		
 		quest.addTask(task);
-		//getActivity().getSupportFragmentManager().popBackStackImmediate();
 	}
 
 	@Override
 	public void taskUpdated(Task task) {
-		//quest.getTasks().set(, task)	
-		Log.d(LOG, "Previously " + this.task.toStringDebug());
-		Log.d(LOG, "Now " + task.toStringDebug());
-		//getActivity().getSupportFragmentManager().popBackStackImmediate();
-		
 		taskList.set(editIndex, task.getName());
 		taskListAdapter.notifyDataSetChanged();
 		
 		quest.getTasks().set(editIndex, task);		
 	}
 
-	public void saveQuest(){
+	public boolean saveQuest(){
 		String s;
 		int i;
+		boolean success;
 		
+		success = false;
 		s = txtName.getText().toString();
 		if (s.length() > 0){
-			quest.setName(s);				
+			quest.setName(s);
+			
+			s = txtXP.getText().toString();
+			if (s.length() > 0){
+				i = Integer.parseInt(s);
+				quest.setXp(i);
+			}
+			
+			quest.setType(QuestType.PERSONAL);
+			
+			Date date = new Date();
+			
+			quest.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+			
+			success = true;
 		}else{
-			Toast.makeText(getActivity(), "Quest Name not Set", Toast.LENGTH_SHORT);
+			Toast.makeText(getActivity(), "Quest Name not Set", Toast.LENGTH_SHORT).show();
 		}
 		
-		s = txtXP.getText().toString();
-		if (s.length() > 0){
-			i = Integer.parseInt(s);
-			quest.setXp(i);
-		}
-		
-		quest.setType(QuestType.PERSONAL);
-		
-		Date date = new Date();
-		//Log.d(LOG,"Time: " + DateFormat.format("", date));
-		
-		quest.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+		return success;
 	}
 	
 	public Quest getQuest(){
@@ -226,16 +208,6 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btnAddTask:
-//			AddTaskFragment f = new AddTaskFragment();
-//			f.setQuestCreationListener(this);
-//			
-//			FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//			
-//			fragmentTransaction.replace(R.id.container, f);
-//			fragmentTransaction.addToBackStack("task");
-//			fragmentTransaction.commit();
-//			
 			taskCreationListener.newTask();
 			break;
 

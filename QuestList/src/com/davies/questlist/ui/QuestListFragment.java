@@ -21,9 +21,6 @@ public class QuestListFragment extends Fragment {
 	 */
 	private static final String ARG_SKILL_TREE = "skill_tree";
 	
-	//private TextView txtTest;
-	//private OnClickListener clickListener;
-	
 	private ExpandableListView listView = null;
 	private QuestListAdapter listAdapter = null;
 	private QuestHelper qHelper = null;
@@ -47,7 +44,6 @@ public class QuestListFragment extends Fragment {
 			Bundle savedInstanceState) {
 		int index;
 		String skill;
-		//String[] skilltree = getResources().getStringArray(R.array.skill_tree);
 		
 		View rootView = inflater.inflate(R.layout.fragment_quest_list,
 				container, false);
@@ -58,19 +54,19 @@ public class QuestListFragment extends Fragment {
 		
 		
 		switch (index){
-		case 1:
+		case 0:
 			skill = getResources().getString(R.string.xp_fit);
 			break;
-		case 2:
+		case 1:
 			skill = getResources().getString(R.string.xp_int);
 			break;
-		case 3:
+		case 2:
 			skill = getResources().getString(R.string.xp_art);
 			break;
-		case 4:
+		case 3:
 			skill = getResources().getString(R.string.xp_chr);
 			break;
-		case 5:
+		case 4:
 			skill = getResources().getString(R.string.xp_per);
 			break;
 		default:
@@ -81,7 +77,6 @@ public class QuestListFragment extends Fragment {
 		qHelper = new QuestHelper(getActivity());	
 		listAdapter = new QuestListAdapter(getActivity(), qHelper.getQuestsForSkill(skill));
 		
-		//listAdapter.setItems();
 		listView.setAdapter(listAdapter);
 		
 		Button btnAddNewQuest = (Button) rootView.findViewById(R.id.btnAddNewQuest);
@@ -97,8 +92,6 @@ public class QuestListFragment extends Fragment {
 		super.onAttach(activity);
 		
 		index = getArguments().getInt(ARG_SKILL_TREE);
-		((QuestListActivity) activity).onSectionAttached(index);
-		
-		//clickListener = (OnClickListener)activity;
+		((QuestListActivity) activity).onSectionAttached(index);		
 	}
 }

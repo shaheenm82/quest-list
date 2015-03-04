@@ -17,9 +17,7 @@ import com.davies.questlist.db.Task;
 
 public class AddQuestActivity extends ActionBarActivity implements TaskCreationListener, QuestCreationListener{
 	QuestCreationListener questCreationListener;
-	//TaskCreationListener 
 	
-	//Quest quest;
 	AddQuestFragment questFragment;
 	AddTaskFragment taskFragment;
 	
@@ -31,21 +29,14 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 		setContentView(R.layout.activity_add_quest);		
 		if (savedInstanceState == null) {
 			questFragment = AddQuestFragment.newInstance();
-			//taskFragment = AddTaskFragment.newInstance();
-			
-			//questFragment.setTaskCreationListener(taskFragment);
-			//taskFragment.setQuestCreationListener(questFragment);
-			
-			//Fragment f = AddQuestFragment.newInstance();
-			//qmodListener = (QuestCreationListener)f;
+	
 			questCreationListener = questFragment;
 			questFragment.setTaskCreationListener(this);
 			
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, questFragment).commit();
 			
-			//quest = new Quest();
-			
+			current_fragment = "quest";	
 		}
 	}
 
@@ -62,36 +53,24 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+		//Handle Action Bar Save Button
 		if (id == R.id.action_save_quest) {
+			//Save Task when on task Fragment
 			if (current_fragment.equals("task")){
 				taskFragment.saveTask();
+			//Save Quest when on quest Fragment
 			}else if(current_fragment.equals("quest")){
-				questFragment.saveQuest();
-				
-				QuestHelper qhelper = new QuestHelper(this);
-				qhelper.createQuest(questFragment.getQuest());
-				
-				finish();
+				if (questFragment.saveQuest()){
+					QuestHelper qhelper = new QuestHelper(this);
+					qhelper.createQuest(questFragment.getQuest());
+					
+					finish();
+				}
 			}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-//	@Override
-//	public void onClick(View v) {
-//		switch (v.getId()){
-//		case R.id.btnAddTask:
-//			Fragment f = AddTaskFragment.newInstance();
-//			FragmentManager fragmentManager = getSupportFragmentManager();
-//			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//			
-//			fragmentTransaction.replace(R.id.container, f);
-//			fragmentTransaction.addToBackStack("task");
-//			fragmentTransaction.commit();
-//			break;
-//		}		
-//	}
 
 	@Override
 	public void newTask() {
@@ -105,9 +84,7 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 		
 		fragmentTransaction.replace(R.id.container, taskFragment);
 		fragmentTransaction.addToBackStack(current_fragment);
-		fragmentTransaction.commit();
-		
-		
+		fragmentTransaction.commit();		
 	}
 
 	@Override
@@ -144,47 +121,4 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 		
 		current_fragment = "quest";
 	}
-
-//	@Override
-//	public void taskAdded(Task task) {
-//		getSupportFragmentManager().popBackStackImmediate();
-//		qmodListener.taskAdded(task);		
-//	}
-//
-//	@Override
-//	public void taskRemoved(Task task) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void newTask() {
-//		// TODO Auto-generated method stub
-//		Fragment f = AddTaskFragment.newInstance();
-//		FragmentManager fragmentManager = getSupportFragmentManager();
-//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//		
-//		fragmentTransaction.replace(R.id.container, f);
-//		fragmentTransaction.addToBackStack("task");
-//		fragmentTransaction.commit();
-//	}
-//
-//	@Override
-//	public void editTask(Task task) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void taskCreated(Task task) {
-//		// TODO Auto-generated method stub
-//		quest.addTask(task);
-//		getSupportFragmentManager().popBackStackImmediate();
-//	}
-//
-//	@Override
-//	public void taskUpdated(Task task) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 }

@@ -37,7 +37,7 @@ public class QuestHelper {
 	    values.put(DatabaseHelper.COL_QUEST_XP, quest.getXp());
 	    values.put(DatabaseHelper.COL_QUEST_CREATED, quest.getCreated_date());
 	    
-	    Log.i(LOG,"Inserting Quest record " + values.toString());
+	    Log.i(LOG,"Creating Quest : " + values.toString());
 	    // insert row
 	    long id = db.insert(DatabaseHelper.TABLE_QUEST, null, values);
 	    
@@ -62,9 +62,12 @@ public class QuestHelper {
 				+ "where task." + skill + "_xp > 0 "
 				+ "order by quest.completed, quest.created_date";
 		
+		Log.d(LOG,qry);
+		
 		Cursor c = db.rawQuery(qry, null);
 		
 		if (c.moveToFirst()){
+			do{
 			quest = new Quest();
 			
 			quest.setId(c.getLong(0));
@@ -76,14 +79,14 @@ public class QuestHelper {
 
 			quest.setTasks(thelper.getTasksForQuest(quest.getId()));
 			
-			Log.i(LOG,"Adding Quest record " + quest);
+			Log.i(LOG,"Retrieving Quest record " + quest);
 			
 			questList.add(quest);
+			} while (c.moveToNext());
 		}
 		
 		db.close();
 		
-		//Log.e(LOG,"No User Record Found!!!");
 		return questList;
 	}
 	

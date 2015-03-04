@@ -67,6 +67,7 @@ public class TaskHelper {
 				DatabaseHelper.COL_TASK_COMPLETED + "," + DatabaseHelper.COL_TASK_CREATED);
 		
 		if (c.moveToFirst()){
+			do{
 			task = new Task();
 			task.setId(c.getLong(0));
 			task.setName(c.getString(1));
@@ -79,13 +80,13 @@ public class TaskHelper {
 			task.setCreated_date(c.getString(8));
 			task.setCompleted_date(c.getString(9));
 			
-			Log.i(LOG,"Adding Task record " + task);
+			Log.i(LOG,"Retrieving Task record " + task);
 			taskList.add(task);
+			} while (c.moveToNext());
 		}
 		
 		db.close();
 		
-		//Log.e(LOG,"No User Record Found!!!");
 		return taskList;
 	}
 		

@@ -44,24 +44,6 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 		AddTaskFragment fragment = new AddTaskFragment();
 		return fragment;
 	}
-
-//	public static AddTaskFragment newInstance(Task task) {
-//		Log.d(LOG,"editing task");
-//		
-//		AddTaskFragment fragment = new AddTaskFragment();
-//		
-//		Bundle args = new Bundle();
-//        args.putString("name", task.getName());
-//        args.putString("description", task.getDescription());
-//        args.putInt("fit", task.getFitness_xp());
-//        args.putInt("int", task.getLearning_xp());
-//        args.putInt("art", task.getCulture_xp());
-//        args.putInt("chr", task.getSocial_xp());
-//        args.putInt("per", task.getPersonal_xp());
-//        
-//        fragment.setArguments(args);
-//		return fragment;
-//	}
 	
 	public AddTaskFragment() {
 		// Required empty public constructor
@@ -94,22 +76,6 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 		
 		Log.d(LOG,"purpose " + purpose);
 
-//		if (savedInstanceState != null){
-//			Log.d(LOG,"restoring data");
-//			txtName.setText(savedInstanceState.getString("name"));
-////			
-////			txtDescription.setText(task.getDescription());
-////			
-////			txtFit.setText(task.getFitness_xp());
-////			
-////			txtInt.setText(task.getLearning_xp());
-////			
-////			txtArt.setText(task.getCulture_xp());
-////			
-////			txtChr.setText(task.getSocial_xp());
-////			
-////			txtPer.setText(task.getPersonal_xp());
-//		}
 		if (purpose.equals("new")){
 			txtName.setText("");
 			
@@ -141,20 +107,17 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 			
 			txtPer.setText(String.valueOf(task.getPersonal_xp()));
 		}
-		//questCreationListener = (QuestCreationListener)getActivity();
 		return rootView;
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);			
-		Log.d(LOG,"onAttach");
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.d(LOG,"onDetach");
 	}
 
 	public void setQuestCreationListener(QuestCreationListener qcl){
@@ -163,134 +126,89 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 	
 	@Override
 	public void onClick(View v) {
-		Log.d(LOG,"onClick");
 		switch (v.getId()) {
 		case R.id.btnSaveTask:
 			saveTask();
-			//getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-			//getActivity().getSupportFragmentManager().popBackStackImmediate();
 			break;
 
 		default:
 			break;
 		}
-		
 	}
 
-	public void saveTask(){
+	public boolean saveTask(){
 		Task t = new Task();
 		String s;
 		int i;
+		boolean success;
+		
+		success = false;
 		
 		s = txtName.getText().toString();
 		if (s.length() > 0){
-			t.setName(s);				
+			t.setName(s);
+			
+			s = txtDescription.getText().toString();
+			if (s.length() > 0){
+				t.setDescription(s);				
+			}
+			
+			s = txtFit.getText().toString();
+			if (s.length() > 0){
+				i = Integer.parseInt(s);
+				t.setFitness_xp(i);
+			}
+			
+			s = txtInt.getText().toString();
+			if (s.length() > 0){
+				i = Integer.parseInt(s);
+				t.setLearning_xp(i);
+			}
+			
+			s = txtArt.getText().toString();
+			if (s.length() > 0){
+				i = Integer.parseInt(s);
+				t.setCulture_xp(i);
+			}
+			
+			s = txtChr.getText().toString();
+			if (s.length() > 0){
+				i = Integer.parseInt(s);
+				t.setSocial_xp(i);
+			}
+			
+			s = txtPer.getText().toString();
+			if (s.length() > 0){
+				i = Integer.parseInt(s);
+				t.setPersonal_xp(i);
+			}
+			
+			Date date = new Date();
+			t.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+			
+			if (purpose.equals("new")){
+				questCreationListener.taskCreated(t);
+			}else{
+				questCreationListener.taskUpdated(t);
+			}
+			
+			success = true;
 		}else{
-			Toast.makeText(getActivity(), "Task Name not Set", Toast.LENGTH_SHORT);
+			Toast.makeText(getActivity(), "Task Name not Set", Toast.LENGTH_SHORT).show();
 		}
 		
-		s = txtDescription.getText().toString();
-		if (s.length() > 0){
-			t.setDescription(s);				
-		}
-		
-		s = txtFit.getText().toString();
-		if (s.length() > 0){
-			i = Integer.parseInt(s);
-			t.setFitness_xp(i);
-		}
-		
-		s = txtInt.getText().toString();
-		if (s.length() > 0){
-			i = Integer.parseInt(s);
-			t.setLearning_xp(i);
-		}
-		
-		s = txtArt.getText().toString();
-		if (s.length() > 0){
-			i = Integer.parseInt(s);
-			t.setCulture_xp(i);
-		}
-		
-		s = txtChr.getText().toString();
-		if (s.length() > 0){
-			i = Integer.parseInt(s);
-			t.setSocial_xp(i);
-		}
-		
-		s = txtPer.getText().toString();
-		if (s.length() > 0){
-			i = Integer.parseInt(s);
-			t.setPersonal_xp(i);
-		}
-		
-		//Time time = new Time();
-		//time.setToNow();
-		
-		Date date = new Date();
-		//Log.d(LOG,"Time: " + DateFormat.format("", date));
-		
-		t.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
-		
-		if (purpose.equals("new")){
-			questCreationListener.taskCreated(t);
-		}else{
-			questCreationListener.taskUpdated(t);
-		}
+		return success;
 	}
 	
 	@Override
 	public void newTask() {
-		// TODO Auto-generated method stub
-//		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//		
-//		fragmentTransaction.replace(R.id.container, this);
-//		fragmentTransaction.addToBackStack("task");
-//		fragmentTransaction.commit();
-		Log.d(LOG,"newTask");
-//		txtName.setText("");
-//		
-//		txtDescription.setText("");
-//		
-//		txtFit.setText("");
-//		
-//		txtInt.setText("");
-//		
-//		txtArt.setText("");
-//		
-//		txtChr.setText("");
-//		
-//		txtPer.setText("");
-//		
 		purpose = "new";
 	}
 
 	@Override
 	public void editTask(Task task) {
-		// TODO Auto-generated method stub
-//		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//		
-//		fragmentTransaction.replace(R.id.container, this);
-//		fragmentTransaction.addToBackStack("task");
-//		fragmentTransaction.commit();
 		this.task = task;
 		
-		Log.d(LOG,"editTask");
-//		txtName.setText(task.getName());
-//		
-//		txtDescription.setText(task.getDescription());
-//		
-//		txtFit.setText(task.getFitness_xp());
-//		
-//		txtInt.setText(task.getLearning_xp());
-//		
-//		txtArt.setText(task.getCulture_xp());
-//		
-//		txtChr.setText(task.getSocial_xp());
-//		
-//		txtPer.setText(task.getPersonal_xp());
 		purpose = "edit";
 	}
 }

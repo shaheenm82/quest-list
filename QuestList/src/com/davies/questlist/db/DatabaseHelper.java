@@ -95,7 +95,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// Create required tables
 		db.execSQL(CREATE_TABLE_USER);
 		db.execSQL(CREATE_TABLE_QUEST);
-		db.execSQL(CREATE_TABLE_TASK);		
+		db.execSQL(CREATE_TABLE_TASK);	
+		
+		Log.i(LOG, "Database Tables Created");
 	}
 
 	@Override
@@ -105,6 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUEST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASK);
  
+        Log.i(LOG, "Database Tables Dropped/Updated");
         // create new tables
         onCreate(db);
 	}
@@ -112,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public boolean isNewDb(){
 		String selectQuery = "SELECT  * FROM " + TABLE_USER;
 		 
-	    Log.i(LOG, selectQuery);
+	    Log.i(LOG, "Checking for User Record");
 	 
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    Cursor c = db.rawQuery(selectQuery, null);
