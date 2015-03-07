@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.davies.questlist.db.QuestHelper;
 import com.davies.questlist.db.Task;
 
 public class AddQuestActivity extends ActionBarActivity implements TaskCreationListener, QuestCreationListener{
+	private static final String LOG = "AddQuestActivity";
+	
 	QuestCreationListener questCreationListener;
 	
 	AddQuestFragment questFragment;
@@ -64,6 +67,7 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 					QuestHelper qhelper = new QuestHelper(this);
 					qhelper.createQuest(questFragment.getQuest());
 					
+					Log.d(LOG,"Saving Quest");
 					finish();
 				}
 			}

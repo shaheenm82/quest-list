@@ -90,6 +90,16 @@ public class TaskHelper {
 		return taskList;
 	}
 		
+	public int deleteTask(long id){
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		int rows;
+		String[] args = {Long.toString(id)};
+		
+		rows = db.delete(DatabaseHelper.TABLE_TASK, "_id = ?", args);
+		
+		return rows;
+	}
+	
 //	public int updateQuestData(Quest quest){
 //		SQLiteDatabase db = dbHelper.getReadableDatabase();
 //		

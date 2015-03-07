@@ -1,6 +1,7 @@
 package com.davies.questlist.db;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -90,6 +91,21 @@ public class QuestHelper {
 		return questList;
 	}
 	
+	public int deleteQuest(Quest quest){
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		int rows;
+		String[] args = {Long.toString(quest.getId())};
+		TaskHelper thelper = new TaskHelper(context);
+		
+		for (Task task: quest.getTasks()) {
+			thelper.deleteTask(task.getId());
+		}
+		
+		rows = db.delete(DatabaseHelper.TABLE_QUEST, "_id = ?", args);
+		
+		db.close();
+		return rows;
+	}
 //	public int updateQuestData(Quest quest){
 //		SQLiteDatabase db = dbHelper.getReadableDatabase();
 //		

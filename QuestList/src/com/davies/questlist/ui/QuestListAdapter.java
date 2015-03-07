@@ -27,6 +27,11 @@ public class QuestListAdapter extends BaseExpandableListAdapter {
         this.quests = quests;
     }
     
+    public void removeItem(Quest quest){
+    	quests.remove(quest);
+    	notifyDataSetChanged();
+    }
+    
     public void setItems(List<Quest> quests){
     	this.quests = quests;
     }
