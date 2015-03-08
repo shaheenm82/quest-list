@@ -19,6 +19,7 @@ public class Quest {
 	
 	public Quest(){
 		tasks = new ArrayList<>();
+		id = 0;
 	}
 	
 	public long getId() {
@@ -70,6 +71,29 @@ public class Quest {
 		tasks.add(task);
 	}
 	
+	public boolean isQuestCompleted(){
+		boolean completed = true;
+		
+		for (Task task : tasks) {
+			if (task.getCompleted_date() == null){
+				completed = false;
+				return completed;
+			}
+		}
+		return completed;
+	}
+	
+	public int getIncompleteTasks(){
+		int incomplete = 0;
+		
+		for (Task task : tasks) {
+			if (task.getCompleted_date() == null){
+				incomplete ++;
+			}
+		}
+		return incomplete;
+	}
+	
 	@Override
 	public String toString() {
 		String s;
@@ -81,7 +105,7 @@ public class Quest {
 	public String toStringDebug() {
 		String s;
 		
-		s = getName() + "," + getXp() + "," + getType()
+		s = getId() + "," + getName() + "," + getXp() + "," + getType()
 				+ getCreated_date() + "," + getCompleted_date();
 		return s;
 	}

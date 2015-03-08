@@ -67,19 +67,6 @@ public class QuestListActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		Log.d(LOG,"Resuming list activity");
-		//this.onCreate(null);
-//		Intent intent = getIntent();
-//		finish();
-//		startActivity(intent);
-		Log.d(LOG,"Refreshing list");
-		
-	}
-
-	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getSupportFragmentManager();

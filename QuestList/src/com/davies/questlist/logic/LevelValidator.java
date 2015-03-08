@@ -6,11 +6,18 @@ public class LevelValidator {
 	
 	public static void validateLevel(User user){
 		int next_level_xp;
+		int current_level_xp;
 		
 		next_level_xp = getXpForLevel(user.getLevel() + 1);
 		
 		if (user.getXp() >= next_level_xp){
 			user.incrementLevel(next_level_xp);
+		}
+		
+		current_level_xp = getXpForLevel(user.getLevel());
+		
+		if (user.getXp() < current_level_xp){
+			user.decrementLevel();
 		}
 	}
 	

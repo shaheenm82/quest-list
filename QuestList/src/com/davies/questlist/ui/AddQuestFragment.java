@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
+import com.davies.questlist.db.TaskHelper;
 import com.davies.questlist.db.Quest.QuestType;
 import com.davies.questlist.db.Task;
 
@@ -48,6 +49,9 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
     
     private static TextView txtName;
 	private static TextView txtXP;
+	
+	private String purpose;
+	
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -70,6 +74,7 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		
 		taskList=new ArrayList<String>();
 		
+		purpose = "new";
 	}
 
 	@Override
@@ -95,9 +100,22 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		
 		taskview.setAdapter(taskListAdapter);
 		registerForContextMenu(taskview);
+		
+		if (quest.getId() != 0 && purpose.equals("new")){
+			txtName.setText(quest.getName());
+			txtXP.setText(Integer.toString(quest.getXp()));
+			
+			for (Task task : quest.getTasks()) {
+				taskList.add(task.toString());
+			}
+			taskListAdapter.notifyDataSetChanged();
+			
+			purpose = "edit";
+		}
 		return rootView;
 	}
 
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);				
@@ -140,9 +158,13 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 				taskCreationListener.editTask(task);
 			  break;
 		  case 1: //Delete Option
-			  quest.getTasks().remove(info.position);
+			  Task t = quest.getTasks().remove(info.position);
 			  taskList.remove(info.position);
 			  taskListAdapter.notifyDataSetChanged();
+			  if (purpose.equals("edit")){
+				  TaskHelper thelper = new TaskHelper(getActivity());
+				  thelper.deleteTask(t.getId());
+			  }
 			  break;
 		  }
 		  return true;
@@ -164,18 +186,44 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 
 	@Override
 	public void taskUpdated(Task task) {
-		taskList.set(editIndex, task.getName());
+		Log.d(LOG,"Updating Task " + task.getName() + " at index " + editIndex);
+		
+		for (Task t: quest.getTasks()) {
+			Log.d(LOG,"Quest contained " + t.toStringDebug());
+		}
+		quest.getTasks().set(editIndex, task);
+//		for (Task t: quest.getTasks()) {
+//			Log.d(LOG,"Quest contains " + t.toStringDebug());
+//		}
+		
+		taskList.clear();
 		taskListAdapter.notifyDataSetChanged();
 		
-		quest.getTasks().set(editIndex, task);		
+		for (Task t: quest.getTasks()) {
+			Log.d(LOG,"Quest contains " + t.toStringDebug());
+			taskList.add(t.getName());
+		}
+		taskListAdapter.notifyDataSetChanged();
+		
+//		for (String s: taskList) {
+//			Log.d(LOG,"tasklist had " + s);
+//		}
+//		taskList.set(editIndex, task.getName());
+//		
+//		
+//		for (String s: taskList) {
+//			Log.d(LOG,"tasklist has " + s);
+//		}
+		
+		
 	}
 
-	public boolean saveQuest(){
+	public int saveQuest(){
 		String s;
 		int i;
-		boolean success;
+		int success;
 		
-		success = false;
+		success = 0;
 		s = txtName.getText().toString();
 		if (s.length() > 0){
 			quest.setName(s);
@@ -188,16 +236,26 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 			
 			quest.setType(QuestType.PERSONAL);
 			
-			Date date = new Date();
+			success = 2;
 			
-			quest.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+			if (purpose.equals("new")){
+				Date date = new Date();
+				
+				quest.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+				
+				success = 1;
+			}
 			
-			success = true;
+			
 		}else{
 			Toast.makeText(getActivity(), "Quest Name not Set", Toast.LENGTH_SHORT).show();
 		}
 		
 		return success;
+	}
+	
+	public void setQuest(Quest quest){
+		this.quest= quest;			
 	}
 	
 	public Quest getQuest(){

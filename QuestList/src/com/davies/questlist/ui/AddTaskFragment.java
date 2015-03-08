@@ -137,12 +137,18 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 	}
 
 	public boolean saveTask(){
-		Task t = new Task();
 		String s;
 		int i;
 		boolean success;
+		Task t;
 		
 		success = false;
+		
+		if (purpose.equals("new")){
+			t = new Task();
+		}else{
+			t = task;
+		}
 		
 		s = txtName.getText().toString();
 		if (s.length() > 0){
@@ -183,10 +189,10 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 				t.setPersonal_xp(i);
 			}
 			
-			Date date = new Date();
-			t.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
-			
 			if (purpose.equals("new")){
+				Date date = new Date();
+				t.setCreated_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+				
 				questCreationListener.taskCreated(t);
 			}else{
 				questCreationListener.taskUpdated(t);

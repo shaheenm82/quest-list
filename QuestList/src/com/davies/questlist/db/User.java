@@ -35,9 +35,20 @@ public class User {
 		LevelValidator.validateLevel(this);
 	}
 	
+	public void removeXp(int xp){
+		//int orig_xp = this.xp;
+		this.xp -= xp;
+		LevelValidator.validateLevel(this);
+		
+	}
+	
 	public void incrementLevel(int xp){
 		this.level++;
-		this.xp -= xp; 
+		//this.xp -= xp; 
+	}
+	
+	public void decrementLevel(){
+		this.level--;
 	}
 	
 	public String getName() {
@@ -69,10 +80,16 @@ public class User {
 	public String toString() {
 		String s;
 		
-		s = "Name: " + name + ", XP: " + xp + ", Level: " + level;
+		s = name;
 		
 		return s;
 	}
 	
-	
+	public String toDebugString() {
+		String s;
+		
+		s = "Name: " + name + ", XP: " + xp + ", Level: " + level;
+		
+		return s;
+	}
 }

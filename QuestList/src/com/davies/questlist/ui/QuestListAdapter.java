@@ -12,7 +12,7 @@ import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
 import com.davies.questlist.db.Task;
 
-public class QuestListAdapter extends BaseExpandableListAdapter {
+public class QuestListAdapter extends BaseExpandableListAdapter{
 
 	private Context context;
     
@@ -63,7 +63,6 @@ public class QuestListAdapter extends BaseExpandableListAdapter {
 		}
 		
 		taskviewHolder.populateFrom(task);				
-		
 		return convertView;
 	}
 

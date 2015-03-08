@@ -29,17 +29,25 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_quest);		
-		if (savedInstanceState == null) {
-			questFragment = AddQuestFragment.newInstance();
-	
-			questCreationListener = questFragment;
-			questFragment.setTaskCreationListener(this);
+		setContentView(R.layout.activity_add_quest);
+		
+		questFragment = AddQuestFragment.newInstance();
+		
+		questCreationListener = questFragment;
+		questFragment.setTaskCreationListener(this);
+		
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.container, questFragment).commit();
+		
+		current_fragment = "quest";
+		
+		Bundle b = getIntent().getExtras();
+		
+		if (b != null){
+			long id = b.getLong("quest_id");
+			QuestHelper qh = new QuestHelper(this);
 			
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, questFragment).commit();
-			
-			current_fragment = "quest";	
+			questFragment.setQuest(qh.getQuest(id));
 		}
 	}
 
@@ -63,13 +71,23 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 				taskFragment.saveTask();
 			//Save Quest when on quest Fragment
 			}else if(current_fragment.equals("quest")){
-				if (questFragment.saveQuest()){
-					QuestHelper qhelper = new QuestHelper(this);
+				QuestHelper qhelper = new QuestHelper(this);
+				
+				switch (questFragment.saveQuest()){
+				case 1:
 					qhelper.createQuest(questFragment.getQuest());
 					
-					Log.d(LOG,"Saving Quest");
-					finish();
+					Log.d(LOG,"Saving New Quest");
+					break;
+				case 2:
+					qhelper.updateQuest(questFragment.getQuest());
+					
+					Log.d(LOG,"Updating Quest");
+					break;
 				}
+				
+				finish();
+				
 			}
 			return true;
 		}

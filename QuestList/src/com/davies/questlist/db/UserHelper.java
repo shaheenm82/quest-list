@@ -58,7 +58,7 @@ public class UserHelper {
 	public int updateUserData(User user){
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		
-		String where = "id = ?";
+		String where = "_id = ?";
 		String arg[] = {Long.toString(user.getId())};
 		
 		ContentValues values = new ContentValues();

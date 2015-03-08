@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/btnAddNewQuest"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true" 
+        android:groupIndicator="@android:color/transparent">
 
     </ExpandableListView>
 

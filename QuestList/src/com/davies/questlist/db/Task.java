@@ -11,6 +11,7 @@ public class Task {
 	int social_xp;
 	int personal_xp;
 	String completed_date;
+	long quest_id;
 	
 	public long getId() {
 		return id;
@@ -73,6 +74,13 @@ public class Task {
 		this.completed_date = completed_date;
 	}
 	
+	public long getQuest_id() {
+		return quest_id;
+	}
+	public void setQuest_id(long quest_id) {
+		this.quest_id = quest_id;
+	}
+	
 	@Override
 	public String toString() {
 		String s;
@@ -84,7 +92,7 @@ public class Task {
 	public String toStringDebug() {
 		String s;
 		
-		s = getName() + "," + getDescription() + "," + getFitness_xp() + "," + getLearning_xp()
+		s = getId() + "," + getName() + "," + getDescription() + "," + getFitness_xp() + "," + getLearning_xp()
 				+ "," + getCulture_xp() + "," + getSocial_xp() + "," + getPersonal_xp() + ","
 				+ getCreated_date() + "," + getCompleted_date();
 		return s;

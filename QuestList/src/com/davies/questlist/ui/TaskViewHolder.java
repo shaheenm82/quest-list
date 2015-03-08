@@ -1,6 +1,7 @@
 package com.davies.questlist.ui;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ public class TaskViewHolder {
 	public TextView taskChrXp = null;
 	public TextView taskPerXp = null;
 	
-	Context context;
+	private Context context;
 	
 	public TaskViewHolder(View row) {
 		context = row.getContext();
@@ -37,6 +38,13 @@ public class TaskViewHolder {
 		String xp;
 		
 		taskName.setText(task.getName());
+		if (task.getCompleted_date() != null){
+			taskName.setBackgroundColor(context.getResources().getColor(R.color.task_completed));
+			taskName.setPaintFlags(taskName.getPaintFlags()|Paint.STRIKE_THRU_TEXT_FLAG);
+		}else{
+			taskName.setBackgroundColor(context.getResources().getColor(R.color.task_pending));
+			taskName.setPaintFlags(taskName.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+		}
 		
 		Log.d(LOG, context.getString(R.string.xp_fit));
 		
@@ -56,5 +64,7 @@ public class TaskViewHolder {
 		taskPerXp.setText(xp);
 		
 		taskDesc.setText(task.getDescription());
+		
+		
 	}
 }
