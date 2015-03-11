@@ -71,8 +71,8 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 		txtChr = (TextView) rootView.findViewById(R.id.txtNewTaskChr);
 		txtPer = (TextView) rootView.findViewById(R.id.txtNewTaskPer);
 		
-		Button btnSaveTask = (Button) rootView.findViewById(R.id.btnSaveTask);
-		btnSaveTask.setOnClickListener(this);
+//		Button btnSaveTask = (Button) rootView.findViewById(R.id.btnSaveTask);
+//		btnSaveTask.setOnClickListener(this);
 		
 		Log.d(LOG,"purpose " + purpose);
 
@@ -127,9 +127,9 @@ public class AddTaskFragment extends Fragment implements OnClickListener, TaskCr
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btnSaveTask:
-			saveTask();
-			break;
+//		case R.id.btnSaveTask:
+//			saveTask();
+//			break;
 
 		default:
 			break;

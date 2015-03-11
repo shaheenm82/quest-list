@@ -1,5 +1,7 @@
 package com.davies.questlist.logic;
 
+import android.util.Log;
+
 import com.davies.questlist.db.User;
 
 public class LevelValidator {
@@ -8,17 +10,24 @@ public class LevelValidator {
 		int next_level_xp;
 		int current_level_xp;
 		
-		next_level_xp = getXpForLevel(user.getLevel() + 1);
+		next_level_xp = getXpForLevel(user.getLevel());
+		current_level_xp = getXpForLevel(user.getLevel()-1);
 		
-		if (user.getXp() >= next_level_xp){
-			user.incrementLevel(next_level_xp);
+		Log.d("LevelValidator", "1) U " + user.getXp() + ", L " + user.getLevel() + ", C " + current_level_xp + ", N " + next_level_xp);
+		while (user.getXp() >= getXpForLevel(user.getLevel())){
+			user.incrementLevel(0);
+			next_level_xp = getXpForLevel(user.getLevel());
+			Log.d("LevelValidator", "2) U " + user.getXp() + ", L " + user.getLevel() + ", C " + current_level_xp + ", N " + next_level_xp);
+			return;
 		}
 		
-		current_level_xp = getXpForLevel(user.getLevel());
-		
-		if (user.getXp() < current_level_xp){
+		while (user.getXp() < current_level_xp){
 			user.decrementLevel();
+			current_level_xp = getXpForLevel(user.getLevel()-1);			
+			Log.d("LevelValidator", "3) U " + user.getXp() + ", L " + user.getLevel() + ", C" + current_level_xp + ", N " + next_level_xp);
 		}
+				
+		Log.d("LevelValidator", "4) U " + user.getXp() + ", L " + user.getLevel() + ", C" + current_level_xp + ", N " + next_level_xp);
 	}
 	
 	public static int getXpForLevel(int level){
@@ -26,8 +35,20 @@ public class LevelValidator {
 		double xp;
 		
 		//relook at this formula if levelling up is too easy
-		xp = (0.04 * (level ^ 3)) + (0.8 * (level ^ 2)) + (2 * level);
+		//xp = (0.04 * (level ^ 3)) + (0.8 * (level ^ 2)) + (2 * level);
+		xp = (1 * Math.pow(level,3)) + (2 * Math.pow(level,2)) + (4 * level);
 		retval = (int) xp;
+		
+		return retval;
+	}
+	
+	public static int getLevelForXp(int xp){
+		int retval = 0;
+		//double xp;
+		
+		//relook at this formula if levelling up is too easy
+		//xp = (0.04 * (level ^ 3)) + (0.8 * (level ^ 2)) + (2 * level);
+		//retval = (int) xp;
 		
 		return retval;
 	}

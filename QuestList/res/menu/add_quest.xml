@@ -4,15 +4,22 @@
     tools:context="com.davies.questlist.AddQuestActivity" >
 
     <item
+        android:id="@+id/action_add_task"
+        android:title="@string/new_task"
+        android:icon="@drawable/ic_action_new"
+        android:orderInCategory="0"
+        app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/action_save_quest"
+        android:orderInCategory="10"
+        android:title="@string/save_quest"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_action_save"/>
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never">
     </item>
-    <item
-        android:id="@+id/action_save_quest"
-        android:orderInCategory="0"
-        android:title="@string/save_quest"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_save"/>
+    
 </menu>

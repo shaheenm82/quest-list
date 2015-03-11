@@ -69,11 +69,14 @@ public class QuestListActivity extends ActionBarActivity implements
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
+		QuestListFragment fragment = QuestListFragment.newInstance(position);
+		fragment.setUserChangeListener(mNavigationDrawerFragment);
+		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,
-						QuestListFragment.newInstance(position)).commit();
+						fragment).commit();
 	}
 
 	public void onSectionAttached(int number) {

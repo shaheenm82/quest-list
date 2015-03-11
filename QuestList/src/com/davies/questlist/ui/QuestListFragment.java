@@ -30,6 +30,7 @@ import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
 import com.davies.questlist.db.QuestHelper;
 import com.davies.questlist.db.Task;
+import com.davies.questlist.db.UserHelper;
 
 public class QuestListFragment extends Fragment implements OnGestureListener, OnTouchListener{
 	private static final String LOG = "QuestListFragment";
@@ -45,6 +46,8 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 	private QuestListAdapter listAdapter = null;
 	private QuestHelper qHelper = null;
 	private String skill;
+	
+	private UserChangeListener userChangeListener;
 	
 	private GestureDetectorCompat gestureDetector;
 	/**
@@ -292,6 +295,8 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 		          task.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
 		          qHelper.completeTask(quest, task);		          
 		          //listView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.task_completed));
+		          
+		          userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
 		          listAdapter.notifyDataSetChanged();
 		      }
 //		      else{		  		
@@ -332,6 +337,8 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 		          
 		          task.setCompleted_date(null);
 		          qHelper.uncompleteTask(quest, task);	
+		          
+		          userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
 		          listAdapter.notifyDataSetChanged();
 		      }
 //		      else{		  		
@@ -344,5 +351,9 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 		  }else{
 		      Log.d(LOG, "positionType was NULL - header/footer?");
 		  }
+	}
+	
+	public void setUserChangeListener(UserChangeListener listener){
+		userChangeListener = listener;
 	}
 }

@@ -74,7 +74,7 @@ public class NewUserFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		TextView txtUsername = (TextView) getActivity().findViewById(R.id.txtUsername);
+		TextView txtUsername = (TextView) getActivity().findViewById(R.id.txtNewUsername);
 		String name = txtUsername.getText().toString();
 		
 		if (name.length() != 0){

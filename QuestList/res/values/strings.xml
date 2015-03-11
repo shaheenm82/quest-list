@@ -27,6 +27,8 @@
     <string name="rem_task">Remove Task</string>
     <string name="save_quest">Save Quest</string>
     <string name="title_activity_add_quest">Add A Quest</string>
-    <string name="save_task">Save Task</string>
+    <string name="title_activity_add_task">Add a Task</string><string name="save_task">Save Task</string>
+    <string name="user_level">Level</string>
+    
 
 </resources>

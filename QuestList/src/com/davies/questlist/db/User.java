@@ -1,5 +1,7 @@
 package com.davies.questlist.db;
 
+import android.util.Log;
+
 import com.davies.questlist.logic.LevelValidator;
 
 public class User {
@@ -44,11 +46,15 @@ public class User {
 	
 	public void incrementLevel(int xp){
 		this.level++;
+		Log.d("User", "Incremented Level " + this.level);
 		//this.xp -= xp; 
 	}
 	
 	public void decrementLevel(){
-		this.level--;
+		if (this.level > 1){
+			this.level--;
+		}
+		Log.d("User", "Decremented Level " + this.level);
 	}
 	
 	public String getName() {
@@ -68,7 +74,7 @@ public class User {
 	}
 
 	public int getLevel() {
-		return level;
+		return this.level;
 	}
 
 	public void setLevel(int level) {

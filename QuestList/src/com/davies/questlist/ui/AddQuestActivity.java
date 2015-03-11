@@ -1,18 +1,16 @@
 package com.davies.questlist.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.davies.questlist.R;
-import com.davies.questlist.db.Quest;
 import com.davies.questlist.db.QuestHelper;
 import com.davies.questlist.db.Task;
 
@@ -68,7 +66,10 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 		if (id == R.id.action_save_quest) {
 			//Save Task when on task Fragment
 			if (current_fragment.equals("task")){
-				taskFragment.saveTask();
+				if (taskFragment.saveTask()){
+					((ActionMenuItemView)findViewById(R.id.action_add_task)).setEnabled(true);
+					setTitle(getResources().getString(R.string.title_activity_add_quest));
+				}
 			//Save Quest when on quest Fragment
 			}else if(current_fragment.equals("quest")){
 				QuestHelper qhelper = new QuestHelper(this);
@@ -90,6 +91,12 @@ public class AddQuestActivity extends ActionBarActivity implements TaskCreationL
 				
 			}
 			return true;
+		}else if (id == R.id.action_add_task) {
+			if (current_fragment == "quest"){
+				newTask();
+				((ActionMenuItemView)findViewById(R.id.action_add_task)).setEnabled(false);
+				setTitle(getResources().getString(R.string.title_activity_add_task));
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

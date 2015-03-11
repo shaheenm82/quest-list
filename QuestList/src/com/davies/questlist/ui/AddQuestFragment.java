@@ -91,8 +91,8 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		txtName = (TextView) rootView.findViewById(R.id.txtNewQuestName);
 		txtXP = (TextView) rootView.findViewById(R.id.txtNewQuestXp);
 		
-		Button btnAddTask = (Button) rootView.findViewById(R.id.btnAddTask);
-		btnAddTask.setOnClickListener(this);
+		//Button btnAddTask = (Button) rootView.findViewById(R.id.btnAddTask);
+		//btnAddTask.setOnClickListener(this);
 		
 		ListView taskview = (ListView) rootView.findViewById(R.id.lstQuestTasks);
 				
@@ -265,9 +265,9 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btnAddTask:
-			taskCreationListener.newTask();
-			break;
+//		case R.id.btnAddTask:
+//			taskCreationListener.newTask();
+//			break;
 
 		default:
 			break;
