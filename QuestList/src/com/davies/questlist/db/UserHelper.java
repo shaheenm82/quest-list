@@ -39,8 +39,13 @@ public class UserHelper {
 		Cursor c = db.query(DatabaseHelper.TABLE_USER, null, null, null, null, null, null);
 		
 		if (c.moveToFirst()){
-			user = new User(c.getString(1), c.getInt(2), c.getInt(3));
+			user = new User(c.getString(1), c.getInt(2), c.getInt(8));
 			user.setId(c.getLong(0));
+			user.setFitness_xp(c.getInt(3));
+			user.setLearning_xp(c.getInt(4));
+			user.setCulture_xp(c.getInt(5));
+			user.setSocial_xp(c.getInt(6));
+			user.setPersonal_xp(c.getInt(7));
 			
 			Log.i(LOG,"Reading User record " + user);
 			
@@ -51,8 +56,9 @@ public class UserHelper {
 		
 		db.close();
 		
-		Log.e(LOG,"No User Record Found!!!");
-		return null;
+		user = new User("NewUser");
+		Log.e(LOG,"getUserData: No User Record Found!!!");
+		return user;
 	}
 	
 	public int updateUserData(User user){
@@ -64,6 +70,11 @@ public class UserHelper {
 		ContentValues values = new ContentValues();
 	    values.put(DatabaseHelper.COL_USER_NAME, user.getName());
 	    values.put(DatabaseHelper.COL_USER_XP, user.getXp());
+	    values.put(DatabaseHelper.COL_USER_FIT_XP, user.getFitness_xp());
+	    values.put(DatabaseHelper.COL_USER_INT_XP, user.getLearning_xp());
+	    values.put(DatabaseHelper.COL_USER_ART_XP, user.getCulture_xp());
+	    values.put(DatabaseHelper.COL_USER_CHR_XP, user.getSocial_xp());
+	    values.put(DatabaseHelper.COL_USER_PER_XP, user.getPersonal_xp());
 	    values.put(DatabaseHelper.COL_USER_LEVEL, user.getLevel());
 	    
 	    Log.i(LOG,"Updating User record " + user);

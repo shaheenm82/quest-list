@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.davies.questlist.ui.AddQuestActivity"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/inputs"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" 
+        android:layout_weight="50">
+
+        <FrameLayout
+	        android:id="@+id/quest_container"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+        <FrameLayout
+	        android:id="@+id/quest_tasks"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lists"
+        android:orientation="vertical"
+        android:layout_width="0dp" 
+        android:layout_height="match_parent"
+        android:layout_weight="50">
+    <FrameLayout
+        android:id="@+id/task_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+ 
+</LinearLayout>

@@ -23,8 +23,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ListAdapter;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
@@ -32,14 +36,14 @@ import com.davies.questlist.db.QuestHelper;
 import com.davies.questlist.db.Task;
 import com.davies.questlist.db.UserHelper;
 
-public class QuestListFragment extends Fragment implements OnGestureListener, OnTouchListener{
+public class QuestListFragment extends Fragment implements TaskCompletionListener, OnChildClickListener{
 	private static final String LOG = "QuestListFragment";
 	/**
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
 	private static final String ARG_SKILL_TREE = "skill_tree";
-	private static final int SWIPE_MIN_DISTANCE = 200;
+	//private static final int SWIPE_MIN_DISTANCE = 200;
 	
 	
 	private ExpandableListView listView = null;
@@ -99,16 +103,16 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 			break;
 		}
 		
-		gestureDetector = new GestureDetectorCompat(getActivity(), this);
-		
 		qHelper = new QuestHelper(getActivity());	
 		listAdapter = new QuestListAdapter(getActivity(), qHelper.getQuestsForSkill(skill));
+		listAdapter.setTaskCompletionListener(this);
 		
 		listView.setAdapter(listAdapter);
-		listView.setOnTouchListener(this);
+		listView.setOnChildClickListener(this);
+		//listView.setOnTouchListener(this);
 		
-		Button btnAddNewQuest = (Button) rootView.findViewById(R.id.btnAddNewQuest);
-		btnAddNewQuest.setOnClickListener((OnClickListener)getActivity());
+		//Button btnAddNewQuest = (Button) rootView.findViewById(R.id.btnAddNewQuest);
+		//btnAddNewQuest.setOnClickListener((OnClickListener)getActivity());
 		
 		registerForContextMenu(listView);
 		return rootView;
@@ -120,7 +124,10 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 		// TODO Auto-generated method stub
 		super.onResume();
 		listAdapter = new QuestListAdapter(getActivity(), qHelper.getQuestsForSkill(skill));
+		//listAdapter.setTaskCompletionListener(this);
 		listView.setAdapter(listAdapter);
+		listView.setOnChildClickListener(this);
+		
 	}
 
 	@Override
@@ -207,153 +214,143 @@ public class QuestListFragment extends Fragment implements OnGestureListener, On
 		  }
 		  return true;
 	}
-
-	@Override
-	public boolean onDown(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		// TODO Auto-generated method stub
-		int position = listView.pointToPosition(
-			     Math.round(e1.getX()), Math.round(e1.getY()));
-		
-		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE) {
-			//Swipe Right to Left
-			uncompleteItem(position);
-		} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE) {
-			//Swipe Right to Left
-			completeItem(position);
-		}
-//		Log.d(LOG,"pos : " + e1.getX() + "," + e1.getY() + "|" + e2.getX() + "," + e2.getY());
-//		Log.d(LOG,"vel : " + velocityX + "," + velocityY);
-//		Log.d(LOG,"list position : " + position);
+	
+//	public void completeTask(int position){
+//		//Quest quest;
+//		Task task;
+//		int groupPosition = 0;
+//		int childPosition = 0;
+//		
+//		// 1. Flat list position  ->  Packed position
+//		long packedPosition = listView.getExpandableListPosition(position);
+//		// 2. Unpack packed position type
+//		int positionType = ExpandableListView.getPackedPositionType(packedPosition);
+//
 //		  
-		return true;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-			float distanceY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		gestureDetector.onTouchEvent(event);
-		return false;
-	}
-	
-	private void completeItem(int position){
-		Quest quest;
-		Task task;
-		int groupPosition = 0;
-		int childPosition = 0;
-		
-		// 1. Flat list position  ->  Packed position
-		long packedPosition = listView.getExpandableListPosition(position);
-		// 2. Unpack packed position type
-		int positionType = ExpandableListView.getPackedPositionType(packedPosition);
-
-		  
-		// 3. Unpack position values based on positionType
-		//    if not PACKED_POSITION_TYPE_NULL there will at least be a groupPosition
-		if( positionType != ExpandableListView.PACKED_POSITION_TYPE_NULL ){
-		      groupPosition = listView.getPackedPositionGroup(packedPosition);
-		      Log.d(LOG,"Group Pos: " + groupPosition);
-			  
-		      if(positionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD){
-		          childPosition = listView.getPackedPositionChild(packedPosition);
-		          Log.d(LOG,"Child Pos : " + childPosition);
-		          quest = (Quest)listAdapter.getGroup(groupPosition);
-		          task = (Task) listAdapter.getChild(groupPosition, childPosition);
-		          
-		          Date date = new Date();
-					
-		          task.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
-		          qHelper.completeTask(quest, task);		          
-		          //listView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.task_completed));
-		          
-		          userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
-		          listAdapter.notifyDataSetChanged();
-		      }
-//		      else{		  		
-//		    	  //quest = (Quest)listAdapter.getGroup(groupPosition);
-//		    	  //Date date = new Date();
-//					
-//		          //quest.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+//		// 3. Unpack position values based on positionType
+//		//    if not PACKED_POSITION_TYPE_NULL there will at least be a groupPosition
+//		if( positionType != ExpandableListView.PACKED_POSITION_TYPE_NULL ){
+//		      groupPosition = listView.getPackedPositionGroup(packedPosition);
+//		      Log.d(LOG,"Group Pos: " + groupPosition);
+//			  
+//		      if(positionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD){
+//		          childPosition = listView.getPackedPositionChild(packedPosition);
+//		          Log.d(LOG,"Child Pos : " + childPosition);
+//		          //quest = (Quest)listAdapter.getGroup(groupPosition);
+//		          task = (Task) listAdapter.getChild(groupPosition, childPosition);
+//		          
+//		          completeTask(task);
+////		          Date date = new Date();
+////					
+////		          task.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+////		          qHelper.completeTask(quest, task);		          
+////		          //listView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.task_completed));
+////		          
+////		          userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
+////		          listAdapter.notifyDataSetChanged();
 //		      }
-
-		  }else{
-		      Log.d(LOG, "positionType was NULL - header/footer?");
-		  }
-	}
-	
-	private void uncompleteItem(int position){
-		Quest quest;
-		Task task;
-		int groupPosition = 0;
-		int childPosition = 0;
-		
-		// 1. Flat list position  ->  Packed position
-		long packedPosition = listView.getExpandableListPosition(position);
-		// 2. Unpack packed position type
-		int positionType = ExpandableListView.getPackedPositionType(packedPosition);
-
-		  
-		// 3. Unpack position values based on positionType
-		//    if not PACKED_POSITION_TYPE_NULL there will at least be a groupPosition
-		if( positionType != ExpandableListView.PACKED_POSITION_TYPE_NULL ){
-		      groupPosition = listView.getPackedPositionGroup(packedPosition);
-		      Log.d(LOG,"Group Pos: " + groupPosition);
-			  
-		      if(positionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD){
-		          childPosition = listView.getPackedPositionChild(packedPosition);
-		          Log.d(LOG,"Child Pos : " + childPosition);
-		          quest = (Quest)listAdapter.getGroup(groupPosition);
-		          task = (Task) listAdapter.getChild(groupPosition, childPosition);
-		          
-		          task.setCompleted_date(null);
-		          qHelper.uncompleteTask(quest, task);	
-		          
-		          userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
-		          listAdapter.notifyDataSetChanged();
-		      }
-//		      else{		  		
-//		    	  //quest = (Quest)listAdapter.getGroup(groupPosition);
-//		    	  //Date date = new Date();
-//					
-//		          //quest.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+////		      else{		  		
+////		    	  //quest = (Quest)listAdapter.getGroup(groupPosition);
+////		    	  //Date date = new Date();
+////					
+////		          //quest.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+////		      }
+//
+//		  }else{
+//		      Log.d(LOG, "positionType was NULL - header/footer?");
+//		  }
+//	}
+//	
+//	public void uncompleteTask(int position){
+//		//Quest quest;
+//		Task task;
+//		int groupPosition = 0;
+//		int childPosition = 0;
+//		
+//		// 1. Flat list position  ->  Packed position
+//		long packedPosition = listView.getExpandableListPosition(position);
+//		// 2. Unpack packed position type
+//		int positionType = ExpandableListView.getPackedPositionType(packedPosition);
+//
+//		  
+//		// 3. Unpack position values based on positionType
+//		//    if not PACKED_POSITION_TYPE_NULL there will at least be a groupPosition
+//		if( positionType != ExpandableListView.PACKED_POSITION_TYPE_NULL ){
+//		      groupPosition = listView.getPackedPositionGroup(packedPosition);
+//		      Log.d(LOG,"Group Pos: " + groupPosition);
+//			  
+//		      if(positionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD){
+//		          childPosition = listView.getPackedPositionChild(packedPosition);
+//		          Log.d(LOG,"Child Pos : " + childPosition);
+//		          //quest = (Quest)listAdapter.getGroup(groupPosition);
+//		          task = (Task) listAdapter.getChild(groupPosition, childPosition);
+//		          
+//		          uncompleteTask(task);
+////		          task.setCompleted_date(null);
+////		          qHelper.uncompleteTask(quest, task);	
+////		          
+////		          userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
+////		          listAdapter.notifyDataSetChanged();
 //		      }
-
-		  }else{
-		      Log.d(LOG, "positionType was NULL - header/footer?");
-		  }
-	}
+////		      else{		  		
+////		    	  //quest = (Quest)listAdapter.getGroup(groupPosition);
+////		    	  //Date date = new Date();
+////					
+////		          //quest.setCompleted_date(DateFormat.format("yyyy-MM-dd HH:mm", date).toString());
+////		      }
+//
+//		  }else{
+//		      Log.d(LOG, "positionType was NULL - header/footer?");
+//		  }
+//	}
 	
 	public void setUserChangeListener(UserChangeListener listener){
 		userChangeListener = listener;
+	}
+
+	@Override
+	public void completeTask(Task task) {
+		// TODO Auto-generated method stub
+		Quest quest;
+		Date date = new Date();
+		
+		quest = qHelper.getQuest(task.getQuest_id());
+		
+        task.setCompleted_date(DateFormat.format("yyyy-MM-dd hh:mm", date).toString());
+        qHelper.completeTask(quest, task);		          
+        //listView.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.task_completed));
+        
+        userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
+        listAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void uncompleteTask(Task task) {
+		// TODO Auto-generated method stub
+		Quest quest;
+		
+		quest = qHelper.getQuest(task.getQuest_id());
+		
+		task.setCompleted_date(null);
+        qHelper.uncompleteTask(quest, task);	
+        
+        userChangeListener.userChanged(new UserHelper(getActivity()).getUserData());
+        listAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+		
+		Log.d(LOG,"G " + groupPosition + ", C " + childPosition);
+		Task t = (Task) listAdapter.getChild(groupPosition, childPosition);
+		
+		if (t.getCompleted_date() == null){
+			completeTask(t);
+		}else{
+			uncompleteTask(t);
+		}
+		
+		return true;
 	}
 }

@@ -27,6 +27,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // User Table - column names
     public static final String COL_USER_NAME = "name";
     public static final String COL_USER_XP = "xp";
+    public static final String COL_USER_FIT_XP = "fit_xp";
+    public static final String COL_USER_INT_XP = "int_xp";
+    public static final String COL_USER_ART_XP = "art_xp";
+    public static final String COL_USER_CHR_XP = "chr_xp";
+    public static final String COL_USER_PER_XP = "per_xp";    
     public static final String COL_USER_LEVEL = "level";
  
     // Quest Table - column names
@@ -40,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_TASK_NAME = "name";
     public static final String COL_TASK_DESC = "description";
     public static final String COL_TASK_CREATED = "created_date";
+    public static final String COL_TASK_XP = "xp";
     public static final String COL_TASK_FIT_XP = "fit_xp";
     public static final String COL_TASK_INT_XP = "int_xp";
     public static final String COL_TASK_ART_XP = "art_xp";
@@ -56,6 +62,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	+ " (" + KEY_ID + " INTEGER PRIMARY KEY,"
     	+ COL_USER_NAME + " TEXT NOT NULL,"
     	+ COL_USER_XP + " INTEGER DEFAULT 0,"
+    	+ COL_USER_FIT_XP + " INTEGER DEFAULT 0,"
+    	+ COL_USER_INT_XP + " INTEGER DEFAULT 0,"
+    	+ COL_USER_ART_XP + " INTEGER DEFAULT 0,"
+    	+ COL_USER_CHR_XP + " INTEGER DEFAULT 0,"
+    	+ COL_USER_PER_XP + " INTEGER DEFAULT 0,"
     	+ COL_USER_LEVEL + " INTEGER )";
  
     // Quest table create statement
@@ -75,6 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
         + COL_TASK_NAME + " TEXT NOT NULL,"
         + COL_TASK_DESC + " TEXT,"
+        + COL_TASK_XP + " INTEGER DEFAULT 0,"
         + COL_TASK_FIT_XP + " INTEGER DEFAULT 0,"
         + COL_TASK_INT_XP + " INTEGER DEFAULT 0,"
         + COL_TASK_ART_XP + " INTEGER DEFAULT 0,"
@@ -82,8 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         + COL_TASK_PER_XP + " INTEGER DEFAULT 0,"
         + COL_TASK_CREATED + " TEXT NOT NULL,"
         + COL_TASK_COMPLETED + " TEXT,"
-        + COL_TASK_QUEST + " INTEGER,"
-        + COL_TASK_PARENT + " INTEGER "
+        + COL_TASK_QUEST + " INTEGER"
         + ")";
     
     public DatabaseHelper(Context context) {

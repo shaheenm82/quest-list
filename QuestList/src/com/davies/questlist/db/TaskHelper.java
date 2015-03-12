@@ -16,7 +16,8 @@ public class TaskHelper {
     
     private String allTaskColumns[] = {DatabaseHelper.KEY_ID,
     		DatabaseHelper.COL_TASK_NAME, 
-    		DatabaseHelper.COL_TASK_DESC, 
+    		DatabaseHelper.COL_TASK_DESC,
+    		DatabaseHelper.COL_TASK_XP,
     		DatabaseHelper.COL_TASK_FIT_XP, 
     		DatabaseHelper.COL_TASK_INT_XP,
     		DatabaseHelper.COL_TASK_ART_XP,
@@ -39,11 +40,12 @@ public class TaskHelper {
 	    ContentValues values = new ContentValues();
 	    values.put(DatabaseHelper.COL_TASK_NAME, task.getName());
 	    values.put(DatabaseHelper.COL_TASK_DESC, task.getDescription());
-	    values.put(DatabaseHelper.COL_TASK_FIT_XP, task.getFitness_xp());
-	    values.put(DatabaseHelper.COL_TASK_INT_XP, task.getLearning_xp());
-	    values.put(DatabaseHelper.COL_TASK_ART_XP, task.getCulture_xp());
-	    values.put(DatabaseHelper.COL_TASK_CHR_XP, task.getSocial_xp());
-	    values.put(DatabaseHelper.COL_TASK_PER_XP, task.getPersonal_xp());
+	    values.put(DatabaseHelper.COL_TASK_XP, task.getXp());
+	    values.put(DatabaseHelper.COL_TASK_FIT_XP, task.isFitness_xp());
+	    values.put(DatabaseHelper.COL_TASK_INT_XP, task.isLearning_xp());
+	    values.put(DatabaseHelper.COL_TASK_ART_XP, task.isCulture_xp());
+	    values.put(DatabaseHelper.COL_TASK_CHR_XP, task.isSocial_xp());
+	    values.put(DatabaseHelper.COL_TASK_PER_XP, task.isPersonal_xp());
 	    values.put(DatabaseHelper.COL_TASK_CREATED, task.getCreated_date());
 	    values.put(DatabaseHelper.COL_TASK_COMPLETED, task.getCompleted_date());
 	    values.put(DatabaseHelper.COL_TASK_QUEST, quest_id);
@@ -63,11 +65,12 @@ public class TaskHelper {
 	    ContentValues values = new ContentValues();
 	    values.put(DatabaseHelper.COL_TASK_NAME, task.getName());
 	    values.put(DatabaseHelper.COL_TASK_DESC, task.getDescription());
-	    values.put(DatabaseHelper.COL_TASK_FIT_XP, task.getFitness_xp());
-	    values.put(DatabaseHelper.COL_TASK_INT_XP, task.getLearning_xp());
-	    values.put(DatabaseHelper.COL_TASK_ART_XP, task.getCulture_xp());
-	    values.put(DatabaseHelper.COL_TASK_CHR_XP, task.getSocial_xp());
-	    values.put(DatabaseHelper.COL_TASK_PER_XP, task.getPersonal_xp());
+	    values.put(DatabaseHelper.COL_TASK_XP, task.getXp());
+	    values.put(DatabaseHelper.COL_TASK_FIT_XP, task.isFitness_xp());
+	    values.put(DatabaseHelper.COL_TASK_INT_XP, task.isLearning_xp());
+	    values.put(DatabaseHelper.COL_TASK_ART_XP, task.isCulture_xp());
+	    values.put(DatabaseHelper.COL_TASK_CHR_XP, task.isSocial_xp());
+	    values.put(DatabaseHelper.COL_TASK_PER_XP, task.isPersonal_xp());
 	    values.put(DatabaseHelper.COL_TASK_CREATED, task.getCreated_date());
 	    values.put(DatabaseHelper.COL_TASK_COMPLETED, task.getCompleted_date());
 	    values.put(DatabaseHelper.COL_TASK_QUEST, quest_id);
@@ -100,9 +103,23 @@ public class TaskHelper {
 	    int id = db.update(DatabaseHelper.TABLE_TASK, values, "_id = ?", args);
 	    //User user = uhelper.getUserData();
 	    
-	    user.addXp(task.getFitness_xp() + task.getLearning_xp() 
-	    		+ task.getCulture_xp() + task.getSocial_xp()
-	    		+ task.getPersonal_xp());
+	    user.addXp(task.getXp());
+	    
+	    if (task.isFitness_xp()){
+	    	 user.addSkillXp(SkillTree.FITNESS, task.getXp());
+	    }
+	    if (task.isLearning_xp()){
+	    	 user.addSkillXp(SkillTree.LEARNING, task.getXp());
+	    }
+	    if (task.isCulture_xp()){
+	    	 user.addSkillXp(SkillTree.CULTURE, task.getXp());
+	    }
+	    if (task.isSocial_xp()){
+	    	 user.addSkillXp(SkillTree.SOCIAL, task.getXp());
+	    }
+	    if (task.isPersonal_xp()){
+	    	 user.addSkillXp(SkillTree.PERSONAL, task.getXp());
+	    }
 	    
 	    Log.i(LOG,"Updating User : " + user.toDebugString());
 	    
@@ -125,9 +142,23 @@ public class TaskHelper {
 	    
 	    //User user = uhelper.getUserData();
 	    
-	    user.removeXp(task.getFitness_xp() + task.getLearning_xp() 
-	    		+ task.getCulture_xp() + task.getSocial_xp()
-	    		+ task.getPersonal_xp());
+	    user.removeXp(task.getXp());
+	    
+	    if (task.isFitness_xp()){
+	    	 user.removeSkillXp(SkillTree.FITNESS, task.getXp());
+	    }
+	    if (task.isLearning_xp()){
+	    	 user.removeSkillXp(SkillTree.LEARNING, task.getXp());
+	    }
+	    if (task.isCulture_xp()){
+	    	 user.removeSkillXp(SkillTree.CULTURE, task.getXp());
+	    }
+	    if (task.isSocial_xp()){
+	    	 user.removeSkillXp(SkillTree.SOCIAL, task.getXp());
+	    }
+	    if (task.isPersonal_xp()){
+	    	 user.removeSkillXp(SkillTree.PERSONAL, task.getXp());
+	    }
 	    
 	    Log.i(LOG,"Updating User : " + user.toDebugString());
 //	    if (id > 0){
@@ -156,14 +187,15 @@ public class TaskHelper {
 			task.setId(c.getLong(0));
 			task.setName(c.getString(1));
 			task.setDescription(c.getString(2));
-			task.setFitness_xp(c.getInt(3));
-			task.setLearning_xp(c.getInt(4));
-			task.setCulture_xp(c.getInt(5));
-			task.setSocial_xp(c.getInt(6));
-			task.setPersonal_xp(c.getInt(7));
-			task.setCreated_date(c.getString(8));
-			task.setCompleted_date(c.getString(9));
-			task.setQuest_id(c.getLong(10));
+			task.setXp(c.getInt(3));
+			task.setFitness_xp(c.getInt(4) == 1);
+			task.setLearning_xp(c.getInt(5) == 1);
+			task.setCulture_xp(c.getInt(6) == 1);
+			task.setSocial_xp(c.getInt(7) == 1);
+			task.setPersonal_xp(c.getInt(8)== 1);
+			task.setCreated_date(c.getString(9));
+			task.setCompleted_date(c.getString(10));
+			task.setQuest_id(c.getLong(11));
 			
 			Log.i(LOG,"Retrieving Task record " + task.toStringDebug());
 			taskList.add(task);

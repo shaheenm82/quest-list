@@ -8,22 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.davies.questlist.QuestListFragment" >
 
-    <Button
-        android:id="@+id/btnAddNewQuest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/add_quest" />
-
     <ExpandableListView
         android:id="@+id/questListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btnAddNewQuest"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" 
-        android:groupIndicator="@android:color/transparent">
+        android:layout_centerHorizontal="true"
+        android:groupIndicator="@android:color/transparent" >
 
     </ExpandableListView>
 

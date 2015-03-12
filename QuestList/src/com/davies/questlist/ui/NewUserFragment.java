@@ -90,6 +90,8 @@ public class NewUserFragment extends Fragment implements OnClickListener{
 			mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 					(DrawerLayout) getActivity().findViewById(R.id.drawer_layout));
 			
+			mNavigationDrawerFragment.userChanged(user);
+			
 			getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 		}
 	}

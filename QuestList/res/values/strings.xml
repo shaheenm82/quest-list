@@ -22,13 +22,17 @@
     <string name="xp_per">PER</string>
     <string name="title_activity_new_quest">New Quest</string>
     <string name="hello_world">Hello world!</string>
-    <string name="quest_xp_new">XP Reward</string>
+    <string name="quest_xp_new">Quest Completion Bonus</string>
     <string name="new_task">Add Task</string>
     <string name="rem_task">Remove Task</string>
     <string name="save_quest">Save Quest</string>
     <string name="title_activity_add_quest">Add A Quest</string>
-    <string name="title_activity_add_task">Add a Task</string><string name="save_task">Save Task</string>
+    <string name="title_activity_add_task">Add a Task</string>
+    <string name="save_task">Save Task</string>
     <string name="user_level">Level</string>
-    
+    <string name="task_completed">Completed</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="task_xp_new">XP</string>
+    <string name="quest_total_xp">Total XP</string>
 
 </resources>

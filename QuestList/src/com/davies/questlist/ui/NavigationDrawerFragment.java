@@ -233,18 +233,18 @@ public class NavigationDrawerFragment extends Fragment implements UserChangeList
 	}
 
 	private void selectItem(int position) {
-		if (position > 0){
+		//if (position > 0){
 			mCurrentSelectedPosition = position;
 			if (mDrawerListView != null) {
-				mDrawerListView.setItemChecked(position-1, true);
+				mDrawerListView.setItemChecked(position, true);
 			}
 			if (mDrawerLayout != null) {
 				mDrawerLayout.closeDrawer(mFragmentContainerView);
 			}
 			if (mCallbacks != null) {
-				mCallbacks.onNavigationDrawerItemSelected(position-1);
+				mCallbacks.onNavigationDrawerItemSelected(position);
 			}
-		}
+		//}
 	}
 
 	@Override
@@ -331,5 +331,10 @@ public class NavigationDrawerFragment extends Fragment implements UserChangeList
 		// TODO Auto-generated method stub
 		drawerItems.set(0, new DrawerItem(user));
 		mDrawerAdapter.notifyDataSetChanged();
+		
+		//if (mCurrentSelectedPosition == null){
+		//	mCurrentSelectedPosition = 0;
+		//	selectItem(mCurrentSelectedPosition);
+		//}
 	}
 }

@@ -2,6 +2,7 @@ package com.davies.questlist.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -11,13 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.DatabaseHelper;
-import com.davies.questlist.db.QuestHelper;
 
 public class QuestListActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks, OnClickListener {
@@ -46,12 +43,12 @@ public class QuestListActivity extends ActionBarActivity implements
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
 		mTitle = getTitle();
-
 		
 		dbHelper = new DatabaseHelper(getApplicationContext());
 		
 		if (dbHelper.isNewDb()){
 			//Place registration fragment here.
+			Log.d(LOG,"New DB");
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager
 					.beginTransaction()
@@ -59,18 +56,25 @@ public class QuestListActivity extends ActionBarActivity implements
 							new NewUserFragment()).commit();
 		}else{
 			// Set up the drawer.
+			Log.d(LOG,"Setting up Drawer");
+			
 			mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-					(DrawerLayout) findViewById(R.id.drawer_layout));
-			
-			
+					(DrawerLayout) findViewById(R.id.drawer_layout));					
 		}
 	}
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
-		QuestListFragment fragment = QuestListFragment.newInstance(position);
-		fragment.setUserChangeListener(mNavigationDrawerFragment);
+		Fragment fragment;
+		
+		if (position == 0){
+			Log.d(LOG,"Showing User Summary");
+			fragment = UserSummaryFragment.newInstance();
+		}else{			
+			fragment = QuestListFragment.newInstance(position-1);
+			((QuestListFragment)fragment).setUserChangeListener(mNavigationDrawerFragment);			
+		}
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager
@@ -124,12 +128,12 @@ public class QuestListActivity extends ActionBarActivity implements
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch (v.getId()){
-		case R.id.btnAddNewQuest:
-			//open activity for new quest
-			addNewQuest();
-			break;
-		}
+//		switch (v.getId()){
+////		case R.id.btnAddNewQuest:
+////			//open activity for new quest
+////			addNewQuest();
+////			break;
+//		}
 		Log.i("QuestListActivity","Click Event");
 	}
 

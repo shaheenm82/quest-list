@@ -42,13 +42,20 @@ public class LevelValidator {
 		return retval;
 	}
 	
-	public static int getLevelForXp(int xp){
+	public static int getLevelForXp(int xp, int level){
 		int retval = 0;
+		int max_xp;
 		//double xp;
 		
 		//relook at this formula if levelling up is too easy
 		//xp = (0.04 * (level ^ 3)) + (0.8 * (level ^ 2)) + (2 * level);
 		//retval = (int) xp;
+		for (int i = 1; i <= level; i ++){
+			max_xp = getXpForLevel(i);
+			if (xp < max_xp){
+				return i;
+			}
+		}
 		
 		return retval;
 	}

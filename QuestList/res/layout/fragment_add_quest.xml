@@ -3,10 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:padding="5dp"
     tools:context="com.davies.questlist.ui.AddQuestActivity" >
 
     <LinearLayout
@@ -53,11 +50,30 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lstQuestTasks"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/lblTotalQuestXp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/quest_total_xp" />
+
+        <TextView
+            android:id="@+id/txtTotalQuestXp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XP" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddTask"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical|horizontal" >
-    </ListView>
+        android:layout_gravity="center_horizontal"
+        android:text="@string/new_task" />
 
 </LinearLayout>

@@ -1,56 +1,38 @@
 package com.davies.questlist.ui;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
-import com.davies.questlist.db.TaskHelper;
 import com.davies.questlist.db.Quest.QuestType;
-import com.davies.questlist.db.Task;
 
-public class AddQuestFragment extends Fragment implements QuestCreationListener, OnClickListener{
+public class AddQuestFragment extends Fragment implements OnClickListener{
 	Quest quest;
-	Task task;
 	int editIndex;
 	
 	private static final String LOG = "AddQuestFragment";
-	//LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    ArrayList<String> taskList;
-
-    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
-    ArrayAdapter<String> taskListAdapter;
-    
+	    
     TaskCreationListener taskCreationListener;
     
     private static TextView txtName;
 	private static TextView txtXP;
+	private static TextView txtTotalXP;
 	
 	private String purpose;
+	private boolean enabled;
 	
 	/**
 	 * Use this factory method to create a new instance of this fragment using
@@ -72,9 +54,8 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		// Required empty public constructor
 		quest = new Quest();
 		
-		taskList=new ArrayList<String>();
-		
 		purpose = "new";
+		enabled = true;
 	}
 
 	@Override
@@ -90,28 +71,22 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		
 		txtName = (TextView) rootView.findViewById(R.id.txtNewQuestName);
 		txtXP = (TextView) rootView.findViewById(R.id.txtNewQuestXp);
+		txtTotalXP = (TextView) rootView.findViewById(R.id.txtTotalQuestXp);
 		
-		//Button btnAddTask = (Button) rootView.findViewById(R.id.btnAddTask);
-		//btnAddTask.setOnClickListener(this);
+		((Button) rootView.findViewById(R.id.btnAddTask)).setOnClickListener(this);
 		
-		ListView taskview = (ListView) rootView.findViewById(R.id.lstQuestTasks);
-				
-		taskListAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
-		
-		taskview.setAdapter(taskListAdapter);
-		registerForContextMenu(taskview);
-		
-		if (quest.getId() != 0 && purpose.equals("new")){
+		if (quest != null){
 			txtName.setText(quest.getName());
 			txtXP.setText(Integer.toString(quest.getXp()));
-			
-			for (Task task : quest.getTasks()) {
-				taskList.add(task.toString());
-			}
-			taskListAdapter.notifyDataSetChanged();
-			
-			purpose = "edit";
+			txtTotalXP.setText(Integer.toString(quest.getTotalXP()));
 		}
+		
+		if (enabled){
+			enableFragment();
+		}else{
+			disableFragment();
+		}
+		//enableFragment();
 		return rootView;
 	}
 
@@ -126,97 +101,32 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 		super.onDetach();
 	}
 
-	
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		if (v.getId()==R.id.lstQuestTasks) {
-		    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-		    menu.setHeaderTitle("Task: " + taskList.get(info.position));
-		    String[] menuItems = getResources().getStringArray(R.array.task_list_menu);
-		    for (int i = 0; i<menuItems.length; i++) {
-		      menu.add(Menu.NONE, i, i, menuItems[i]);
-		    }
-		  }
+	public void setEnabled(boolean enabled){
+		this.enabled = enabled;
 	}
-
 	
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-		  int menuItemIndex = item.getItemId();
-		  
-		  
-		  String[] menuItems = getResources().getStringArray(R.array.task_list_menu);
-		  String menuItemName = menuItems[menuItemIndex];
-		  String listItemName = taskList.get(info.position);
-
-		  switch (menuItemIndex){
-		  case 0: //Edit Option
-			  	editIndex = info.position;
-				task = quest.getTasks().get(info.position);
-				taskCreationListener.editTask(task);
-			  break;
-		  case 1: //Delete Option
-			  Task t = quest.getTasks().remove(info.position);
-			  taskList.remove(info.position);
-			  taskListAdapter.notifyDataSetChanged();
-			  if (purpose.equals("edit")){
-				  TaskHelper thelper = new TaskHelper(getActivity());
-				  thelper.deleteTask(t.getId());
-			  }
-			  break;
-		  }
-		  return true;
+	public void disableFragment(){
+		Log.d(LOG,"disableFragment");
+		txtName.setEnabled(false);
+		txtXP.setEnabled(false);
 	}
-
+	
+	public void enableFragment(){
+		Log.d(LOG,"enableFragment");
+		txtName.setEnabled(true);
+		txtXP.setEnabled(true);
+	}
+	
+	public void updateXP(Quest quest){
+		quest.setXp(Integer.parseInt(txtXP.getText().toString()));
+		txtTotalXP.setText(Integer.toString(quest.getTotalXP()));
+	}
+	
 	public void setTaskCreationListener(TaskCreationListener tcl){
+		Log.d(LOG,"setTaskListener");
 		taskCreationListener = tcl;
 	}
 
-	@Override
-	public void taskCreated(Task task) {
-		Log.i(LOG,"Adding Task : " + task.getName());
-		
-		taskList.add(task.getName());
-		taskListAdapter.notifyDataSetChanged();
-		
-		quest.addTask(task);
-	}
-
-	@Override
-	public void taskUpdated(Task task) {
-		Log.d(LOG,"Updating Task " + task.getName() + " at index " + editIndex);
-		
-		for (Task t: quest.getTasks()) {
-			Log.d(LOG,"Quest contained " + t.toStringDebug());
-		}
-		quest.getTasks().set(editIndex, task);
-//		for (Task t: quest.getTasks()) {
-//			Log.d(LOG,"Quest contains " + t.toStringDebug());
-//		}
-		
-		taskList.clear();
-		taskListAdapter.notifyDataSetChanged();
-		
-		for (Task t: quest.getTasks()) {
-			Log.d(LOG,"Quest contains " + t.toStringDebug());
-			taskList.add(t.getName());
-		}
-		taskListAdapter.notifyDataSetChanged();
-		
-//		for (String s: taskList) {
-//			Log.d(LOG,"tasklist had " + s);
-//		}
-//		taskList.set(editIndex, task.getName());
-//		
-//		
-//		for (String s: taskList) {
-//			Log.d(LOG,"tasklist has " + s);
-//		}
-		
-		
-	}
 
 	public int saveQuest(){
 		String s;
@@ -255,23 +165,23 @@ public class AddQuestFragment extends Fragment implements QuestCreationListener,
 	}
 	
 	public void setQuest(Quest quest){
-		this.quest= quest;			
+		this.quest= quest;
+		
+		
+			
+		purpose = "edit";
 	}
 	
 	public Quest getQuest(){
 		return quest;
 	}
-	
+
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-//		case R.id.btnAddTask:
-//			taskCreationListener.newTask();
-//			break;
-
-		default:
-			break;
+		// TODO Auto-generated method stub
+		switch (v.getId()){
+		case R.id.btnAddTask:
+			taskCreationListener.newTask();
 		}
-		
-	}	
+	}
 }

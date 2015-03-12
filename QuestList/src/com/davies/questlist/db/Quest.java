@@ -3,7 +3,10 @@ package com.davies.questlist.db;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quest {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Quest implements Parcelable {
 	public enum QuestType{
 		PUBLIC, PERSONAL
 	};
@@ -94,6 +97,18 @@ public class Quest {
 		return incomplete;
 	}
 	
+	public int getTotalXP(){
+		int x = 0;
+		
+		for (Task task : tasks) {
+			x =+ task.getXp();
+		}
+		
+		x += xp;
+		
+		return x;
+	}
+	
 	@Override
 	public String toString() {
 		String s;
@@ -109,4 +124,53 @@ public class Quest {
 				+ getCreated_date() + "," + getCompleted_date();
 		return s;
 	}
+
+    protected Quest(Parcel in) {
+        id = in.readLong();
+        created_date = in.readString();
+        name = in.readString();
+        type = (QuestType) in.readValue(QuestType.class.getClassLoader());
+        xp = in.readInt();
+        completed_date = in.readString();
+        if (in.readByte() == 0x01) {
+            tasks = new ArrayList<Task>();
+            in.readList(tasks, Task.class.getClassLoader());
+        } else {
+            tasks = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(created_date);
+        dest.writeString(name);
+        dest.writeValue(type);
+        dest.writeInt(xp);
+        dest.writeString(completed_date);
+        if (tasks == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(tasks);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Quest> CREATOR = new Parcelable.Creator<Quest>() {
+        @Override
+        public Quest createFromParcel(Parcel in) {
+            return new Quest(in);
+        }
+
+        @Override
+        public Quest[] newArray(int size) {
+            return new Quest[size];
+        }
+    };
 }

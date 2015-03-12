@@ -5,18 +5,23 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.davies.questlist.R;
 import com.davies.questlist.db.Quest;
 import com.davies.questlist.db.Task;
 
-public class QuestListAdapter extends BaseExpandableListAdapter{
+public class QuestListAdapter extends BaseExpandableListAdapter {
 
 	private Context context;
     
     private List<Quest> quests;
+    private TaskCompletionListener taskCompletionListener;
     
     public QuestListAdapter(Context context) {
         this.context = context;
@@ -25,6 +30,10 @@ public class QuestListAdapter extends BaseExpandableListAdapter{
     public QuestListAdapter(Context context,List<Quest> quests) {
         this.context = context;
         this.quests = quests;
+    }
+    
+    public void setTaskCompletionListener(TaskCompletionListener tcl){
+    	this.taskCompletionListener = tcl;
     }
     
     public void removeItem(Quest quest){
@@ -56,7 +65,15 @@ public class QuestListAdapter extends BaseExpandableListAdapter{
 			LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.task_list_item, null);
 			
+			
 			taskviewHolder = new TaskViewHolder(convertView);
+			
+			//CheckBox cb = taskviewHolder.chkCompleted; //(CheckBox) convertView.findViewById(R.id.chkCompleted);
+			//cb.setTag(task);
+			//cb.setOnCheckedChangeListener(this);
+			//cb.setOnClickListener(this);
+			
+			
 			convertView.setTag(taskviewHolder);
 		}else{
 			taskviewHolder = (TaskViewHolder) convertView.getTag();
@@ -114,7 +131,7 @@ public class QuestListAdapter extends BaseExpandableListAdapter{
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return false;
+		return true;
 	}
 
 }

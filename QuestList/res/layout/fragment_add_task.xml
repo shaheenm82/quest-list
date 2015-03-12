@@ -3,11 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+    android:padding="5dp"
+    android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,47 +47,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/lblNewTaskFit"
+            <CheckBox
+                android:id="@+id/chkNewTaskFit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/xp_fit" />
+                android:text="@string/xp_fit"
+                android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/txtNewTaskFit"
+            <CheckBox
+                android:id="@+id/chkNewTaskInt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number" />
+                android:text="@string/xp_int"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/lblNewTaskInt"
+            <CheckBox
+                android:id="@+id/chkNewTaskArt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/xp_int" />
+                android:text="@string/xp_art"
+                android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/txtNewTaskInt"
+            <CheckBox
+                android:id="@+id/chkNewTaskChr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number" />
+                android:text="@string/xp_chr"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/lblNewTaskArt"
+            <CheckBox
+                android:id="@+id/chkNewTaskPer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/xp_art" />
+                android:text="@string/xp_per"
+                android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/txtNewTaskArt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,32 +89,25 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/lblNewTaskChr"
+                android:id="@+id/lblNewTaskXp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/xp_chr" />
+                android:text="@string/task_xp_new" />
 
             <EditText
-                android:id="@+id/txtNewTaskChr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number" />
-
-            <TextView
-                android:id="@+id/lblNewTaskPer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/xp_per" />
-
-            <EditText
-                android:id="@+id/txtNewTaskPer"
+                android:id="@+id/txtNewTaskXp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="number" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSaveTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/save_task"/>
 
     </LinearLayout>

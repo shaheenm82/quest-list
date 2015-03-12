@@ -1,7 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.davies.questlist.ui.AddQuestActivity"
-    tools:ignore="MergeRootFrame" />
+    android:orientation="vertical">
+<FrameLayout
+        android:id="@+id/quest_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+<FrameLayout
+        android:id="@+id/task_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+<FrameLayout
+        android:id="@+id/quest_tasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/> 
+</LinearLayout>

@@ -1,0 +1,212 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.davies.questlist.ui.UserSummaryFragment" >
+
+    <LinearLayout
+        android:id="@+id/userLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <ImageView
+                android:id="@+id/imgUser"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:maxHeight="128dp"
+                android:maxWidth="128dp"
+                android:src="@drawable/ic_user" />
+            
+            <TextView
+                android:id="@+id/txtUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:layout_toLeftOf="@+id/imgUser"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtUserLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/user_level"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ProgressBar
+            android:id="@+id/pbarXP"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:indeterminate="false" />
+        
+        <LinearLayout 
+            android:id="@+id/fitXPLayout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+            <TextView
+	            android:id="@+id/txtUserFitLevel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="5dp"
+	            android:text="@string/xp_fit"
+	            android:layout_weight="0.5"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	        <ProgressBar
+	            android:id="@+id/pbarFitXP"
+	            style="?android:attr/progressBarStyleHorizontal"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="5dp"
+	            android:layout_weight="0.5"
+	            android:indeterminate="false" />
+	        <TextView
+                android:id="@+id/txtUserFitXp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/quest_xp"
+                android:layout_weight="0.1"
+                android:textAppearance="?android:attr/textAppearanceMedium" /> 
+        </LinearLayout>
+        <LinearLayout 
+            android:id="@+id/intXPLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/txtUserIntLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/xp_int"
+                android:layout_weight="0.5"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ProgressBar
+                android:id="@+id/pbarIntXP"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.5"
+                android:indeterminate="false" /> 
+            <TextView
+                android:id="@+id/txtUserIntXp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/quest_xp"
+                android:layout_weight="0.1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+        <LinearLayout 
+            android:id="@+id/artXPLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/txtUserArtLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/xp_art"
+                android:layout_weight="0.5"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ProgressBar
+                android:id="@+id/pbarArtXP"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.5"
+                android:indeterminate="false" /> 
+            <TextView
+                android:id="@+id/txtUserArtXp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/quest_xp"
+                android:layout_weight="0.1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+        <LinearLayout 
+            android:id="@+id/chrXPLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/txtUserChrLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/xp_chr"
+                android:layout_weight="0.5"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ProgressBar
+                android:id="@+id/pbarChrXP"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.5"
+                android:indeterminate="false" /> 
+            <TextView
+                android:id="@+id/txtUserChrXp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/quest_xp"
+                android:layout_weight="0.1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+        <LinearLayout 
+            android:id="@+id/perXPLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/txtUserPerLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/xp_per"
+                android:layout_weight="0.5"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ProgressBar
+                android:id="@+id/pbarPerXP"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.5"
+                android:indeterminate="false" />
+            <TextView
+                android:id="@+id/txtUserPerXp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/quest_xp"
+                android:layout_weight="0.1"
+                android:textAppearance="?android:attr/textAppearanceMedium" /> 
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

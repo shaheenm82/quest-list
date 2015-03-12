@@ -133,25 +133,25 @@ public class QuestHelper {
 	    return id;
 	}
 	
-	public long uncompleteQuest(Quest quest){
-		return uncompleteQuest(quest.getId());
-	}
-	
-	public long uncompleteQuest(long quest_id){
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		 
-	    ContentValues values = new ContentValues();
-	    values.putNull(DatabaseHelper.COL_QUEST_COMPLETED);
-	    
-	    String[] args = {Long.toString(quest_id)};
-	    
-	    Log.i(LOG,"Updating Quest : id " + quest_id + " values " + values.toString());
-	    // update row
-	    int id = db.update(DatabaseHelper.TABLE_QUEST, values, "_id = ?", args);
-	    
-	    db.close();
-	    return id;
-	}
+//	public long uncompleteQuest(Quest quest){
+//		return uncompleteQuest(quest.getId());
+//	}
+//	
+//	public long uncompleteQuest(long quest_id){
+//		SQLiteDatabase db = dbHelper.getWritableDatabase();
+//		 
+//	    ContentValues values = new ContentValues();
+//	    values.putNull(DatabaseHelper.COL_QUEST_COMPLETED);
+//	    
+//	    String[] args = {Long.toString(quest_id)};
+//	    
+//	    Log.i(LOG,"Updating Quest : id " + quest_id + " values " + values.toString());
+//	    // update row
+//	    int id = db.update(DatabaseHelper.TABLE_QUEST, values, "_id = ?", args);
+//	    
+//	    db.close();
+//	    return id;
+//	}
 	
 	public List<Quest> getQuestsForSkill(String skill){
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -164,6 +164,8 @@ public class QuestHelper {
 				+ "on (quest._id = task.quest_id) "
 				+ "where task." + skill + "_xp > 0 "
 				+ "order by quest.completed, quest.created_date";
+		
+		Log.d(LOG,qry);
 		
 		Cursor c = db.rawQuery(qry, null);
 		
