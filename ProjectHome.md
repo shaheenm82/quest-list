@@ -1,0 +1,1 @@
+A tool to make completing tasks more rewarding, by offering experience point rewards.  Public quests allow users to compare and share their experience with others.
